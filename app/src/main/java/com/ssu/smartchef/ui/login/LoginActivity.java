@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     /* add code */
     private Button googleLoginButton;
-    private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -157,11 +156,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -186,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
+//        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
     }
     // [END on_start_check_user]
 
@@ -246,9 +241,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     // [START signin]
     private void signIn() {
-//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signin]
