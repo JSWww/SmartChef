@@ -54,7 +54,7 @@
         android:layout_marginBottom="64dp"
         android:enabled="false"
         android:onClick="onClick"
-        android:text="@string/action_sign_in"
+        android:text="로그인"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,11 +88,33 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
         android:onClick="onClick"
-        android:text="@string/action_sign_up"
+        android:text="회원가입"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/login"
         app:layout_constraintTop_toBottomOf="@+id/password"
         app:layout_constraintVertical_bias="0.050000012" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="292dp"
+        android:text="구글로 시작"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="82dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="348dp"
+        android:layout_marginEnd="48dp"
+        android:text="건너뛰기"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

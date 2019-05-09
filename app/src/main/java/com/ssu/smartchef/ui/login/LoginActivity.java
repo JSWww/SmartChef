@@ -303,22 +303,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         int i = v.getId();
         if (i == R.id.signUp) {
             SignUpDialog signUpDialog = new SignUpDialog(LoginActivity.this);
+            signUpDialog.setContentView(R.layout.signup_dialog);
 
+            // 디바이스 가로 세로 길이 가져오기
             DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
             int width = dm.widthPixels;
             int height = dm.heightPixels;
 
-            //다이얼로그 밖의 화면은 흐리게 만들어줌
+            // 다이얼로그 크기 조절하기
             WindowManager.LayoutParams layoutParams = signUpDialog.getWindow().getAttributes();
-//            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
             layoutParams.copyFrom(signUpDialog.getWindow().getAttributes());
-//            layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-//            layoutParams.dimAmount = 0.8f;
-            layoutParams.width = width / 2;
-            layoutParams.height = height / 2;
-//            Window window = signUpDialog.getWindow();
-//            window.setAttributes(layoutParams);
-
+            layoutParams.width = width - width / 3;
+            layoutParams.height = height / 3;
+            signUpDialog.getWindow().setAttributes(layoutParams);
 
             signUpDialog.show();
         }
