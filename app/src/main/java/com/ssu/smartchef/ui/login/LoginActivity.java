@@ -12,9 +12,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +42,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.ssu.smartchef.MainActivity;
 import com.ssu.smartchef.R;
+import com.ssu.smartchef.SignUpDialog;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -144,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         /* add code */
-        googleLoginButton = findViewById(R.id.googleLoginButton);
+        Button signUpButton = findViewById(R.id.signUp);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -295,9 +301,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //    @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.googleLoginButton) {
-            signIn();
-//            Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        if (i == R.id.signUp) {
+            SignUpDialog signUpDialog = new SignUpDialog(LoginActivity.this);
+
+            DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+            int width = dm.widthPixels;
+            int height = dm.heightPixels;
+
+            //다이얼로그 밖의 화면은 흐리게 만들어줌
+            WindowManager.LayoutParams layoutParams = signUpDialog.getWindow().getAttributes();
+//            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(signUpDialog.getWindow().getAttributes());
+//            layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+//            layoutParams.dimAmount = 0.8f;
+            layoutParams.width = width / 2;
+            layoutParams.height = height / 2;
+//            Window window = signUpDialog.getWindow();
+//            window.setAttributes(layoutParams);
+
+
+            signUpDialog.show();
         }
 
 //        else if (i == R.id.signOutButton) {
@@ -307,6 +330,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //        else if (i == R.id.disconnectButton) {
 //            revokeAccess();
 //        }
+
     }
 
     @Override
