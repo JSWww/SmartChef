@@ -15,6 +15,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        init();
+        getData();
+
     }
     private void init() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -51,6 +56,37 @@ public class MainActivity extends AppCompatActivity
 
         adapter = new mainAdapter();
         recyclerView.setAdapter(adapter);
+    }
+    private void getData() {
+    /*    // 임의의 데이터입니다.
+        List<String> listTitle = Arrays.asList("불고기", "김밥", "탕수육");
+        List<String> listwriter = Arrays.asList("아이유","다현","김태희");
+        List<String> listtag = Arrays.asList("배고파","맛있음","미미");
+        List<Integer> listResId = Arrays.asList(
+                R.drawable.bulgogi,
+                R.drawable.gimbap,
+                R.drawable.tansuyuk
+        );
+        for (int i = 0; i < listTitle.size(); i++) {
+            // 각 List의 값들을 data 객체에 set 해줍니다.
+            Data data = new Data();
+            data.setTitle(listTitle.get(i));
+            data.setWriter(listwriter.get(i));
+            data.setTag(listtag.get(i));
+            data.setResId(listResId.get(i));
+
+            // 각 값이 들어간 data를 adapter에 추가합니다.
+            adapter.addItem(data);
+        }*/
+    Data data = new Data();
+    data.setTitle("불고기");
+    data.setWriter("jissi");
+    data.setTag("불고기");
+    data.setResId(R.drawable.bulgogi);
+    adapter.addItem(data);
+
+        // adapter의 값이 변경되었다는 것을 알려줍니다.
+        adapter.notifyDataSetChanged();
     }
 
     @Override
