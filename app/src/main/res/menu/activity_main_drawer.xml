@@ -17,13 +17,10 @@
             android:icon="@drawable/help"
             android:title="쿠킹저울 이용방법" />
         <item
-            android:icon=" "
             android:title="" />
         <item
-            android:icon=" "
             android:title="" />
         <item
-            android:icon=" "
             android:title="" />
         <item
             android:id="@+id/setting"
