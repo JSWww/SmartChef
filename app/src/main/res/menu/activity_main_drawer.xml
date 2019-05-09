@@ -27,7 +27,7 @@
             android:title="" />
         <item
             android:id="@+id/setting"
-            android:icon=" "
+            android:icon="@drawable/setting"
             android:title="설정" />
     </group>
 
