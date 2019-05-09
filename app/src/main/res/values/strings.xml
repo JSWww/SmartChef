@@ -24,4 +24,9 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="emailLoginButtonText">이메일로 시작</string>
+    <string name="googleLoginButtonText">구글로 시작</string>
+    <string name="skipText">건너뛰기</string>
 </resources>
