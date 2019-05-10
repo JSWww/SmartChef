@@ -3,12 +3,14 @@ package com.ssu.smartchef;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,7 +30,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     /* add code */
-    private Button googleLoginButton;
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -43,9 +44,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         /* add code */
-//        Button signUpButton = findViewById(R.id.signUp);
+        Button googleLoginButton = findViewById(R.id.googleLoginButton);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -70,10 +70,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        updateUI(currentUser);
     }
     // [END on_start_check_user]
+
 
     // [START onactivityresult]
     @Override
@@ -114,8 +114,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-                        } else {
+                            updateUI(user);
+                        }
+
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
 //                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
@@ -165,28 +167,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 //                });
 //    }
 
-//    private void updateUI(FirebaseUser user) {
-//        hideProgressDialog();
-//        if (user != null) {
-//            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-//            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-//
-//            findViewById(R.id.signInButton).setVisibility(View.GONE);
-//            findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
-//        } else {
-//            mStatusTextView.setText(R.string.signed_out);
-//            mDetailTextView.setText(null);
-//
-//            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
-//            findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
-//        }
-//    }
+    private void updateUI(FirebaseUser user) {
+        if (user != null) { // 로그인 된 상태
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else { // 로그인 안 된 상태
+        }
+    }
 
 
 //    @Override
     public void onClick(View v) {
         int i = v.getId();
-//        if (i == R.id.signUp) {
+        if (i == R.id.googleLoginButton) {
+            signIn();
+        }
+        else if (i == R.id.skip) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 //            SignUpDialog signUpDialog = new SignUpDialog(LoginActivity.this);
 //            signUpDialog.setContentView(R.layout.signup_dialog);
 //
