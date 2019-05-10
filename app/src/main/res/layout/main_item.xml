@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/main_rectangle"
     android:orientation="vertical">
 
 
@@ -13,7 +14,6 @@
         android:layout_height="60dp"
         android:layout_weight="1"
         android:text="TITLE"
-        android:background="@drawable/main_rectangle"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/main_rectangle"
         android:text="writer" />
 
     <TextView
@@ -30,7 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_weight="1"
-        android:background="@drawable/main_rectangle"
         android:text="tag" />
 
     <ImageView
@@ -38,5 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scaleType="fitXY"
         tools:srcCompat="@mipmap/ic_launcher" />
 </LinearLayout>
