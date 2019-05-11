@@ -29,4 +29,10 @@
     <string name="emailLoginButtonText">이메일로 시작</string>
     <string name="googleLoginButtonText">구글로 시작</string>
     <string name="skipText">건너뛰기</string>
+
+    <string name="nickNameText">닉네임</string>
+    <string name="emailText">이메일</string>
+    <string name="ok">확인</string>
+
+    <string name="emailAuth">인증하기</string>
 </resources>
