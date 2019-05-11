@@ -10,17 +10,12 @@
             android:title="레시피 등록" />
         <item
             android:id="@+id/nav_gallery"
+            android:icon="@drawable/icon_scale"
             android:title="쿠킹저울" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/help"
             android:title="쿠킹저울 이용방법" />
-        <item
-            android:title="" />
-        <item
-            android:title="" />
-        <item
-            android:title="" />
         <item
             android:id="@+id/setting"
             android:icon="@drawable/setting"
