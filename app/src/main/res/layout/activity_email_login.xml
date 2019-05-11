@@ -6,36 +6,20 @@
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
     android:orientation="vertical"
-    tools:context=".googleSignUpActivity">
-
-    <EditText
-        android:id="@+id/nickNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/nickNameText"
-        android:inputType="text"
-        tools:targetApi="o" />
+    tools:context=".EmailLoginActivity">
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:autofillHints=""
+        android:layout_marginTop="60dp"
         android:clickable="false"
         android:contextClickable="false"
         android:cursorVisible="false"
         android:ems="10"
-        android:enabled="false"
-        android:focusable="auto"
-        android:focusableInTouchMode="false"
         android:hint="@string/emailText"
+        android:importantForAutofill="no"
         android:inputType="textWebEmailAddress"
-        android:text="@string/emailText"
-        android:textColor="@android:color/black"
         tools:targetApi="o" />
 
     <Button
@@ -44,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="110dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="110dp"
-        android:text="@string/ok" />
+        android:text="@string/emailAuth" />
+
 </LinearLayout>
