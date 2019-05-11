@@ -15,6 +15,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,14 +36,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,10 +43,29 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        Button.OnClickListener onClickListener= new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.micButton :
+                        Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
+                        break ;
+                    case R.id.cameraButton :
+                        Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
+                        break ;
+                }
+            }
+        };
+        ImageView micButton = (ImageView) findViewById(R.id.micButton);
+        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
+        micButton.setOnClickListener(onClickListener);
+        cameraButton.setOnClickListener(onClickListener);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         init();
         getData();
 
     }
+
     private void init() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
@@ -57,12 +75,13 @@ public class MainActivity extends AppCompatActivity
         adapter = new mainAdapter();
         recyclerView.setAdapter(adapter);
     }
+
     private void getData() {
         // 임의의 데이터입니다.
         Data data;
         List<String> listTitle = Arrays.asList("불고기", "김밥", "탕수육");
-        List<String> listwriter = Arrays.asList("아이유","다현","김태희");
-        List<String> listtag = Arrays.asList("배고파","맛있음","미미");
+        List<String> listwriter = Arrays.asList("아이유", "다현", "김태희");
+        List<String> listtag = Arrays.asList("배고파", "맛있음", "미미");
         List<Integer> listResId = Arrays.asList(
                 R.drawable.bulgogi,
                 R.drawable.gimbap,
@@ -108,9 +127,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -139,4 +156,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
