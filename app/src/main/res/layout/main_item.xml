@@ -7,7 +7,6 @@
     android:background="@drawable/main_rectangle"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
