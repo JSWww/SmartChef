@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmailLoginActivity"></activity>
+        <activity android:name=".RegistRecipe"></activity>
+        <activity android:name=".ScaleActivity" />
+        <activity android:name=".EmailLoginActivity" />
         <activity android:name=".googleSignUpActivity" />
         <activity
             android:name=".MainActivity"
