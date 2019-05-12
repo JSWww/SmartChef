@@ -8,6 +8,7 @@ public class RecipeData {
 
     String Title;
 
+
     public String getExplanation() {
         return Explanation;
     }
@@ -31,5 +32,3 @@ public class RecipeData {
         Title = title;
     }
 }
-
-
