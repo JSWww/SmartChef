@@ -5,15 +5,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/regist"
             android:icon="@drawable/regist_recipe"
             android:title="레시피 등록" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/cookscale"
             android:icon="@drawable/icon_scale"
             android:title="쿠킹저울" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/cookhelp"
             android:icon="@drawable/help"
             android:title="쿠킹저울 이용방법" />
         <item
