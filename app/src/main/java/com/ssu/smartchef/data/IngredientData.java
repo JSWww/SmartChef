@@ -1,4 +1,4 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.data;
 
 public class IngredientData {
     public IngredientData() {}

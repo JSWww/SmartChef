@@ -44,7 +44,7 @@
                 android:layout_height="150dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/bulgogi" />
+                app:srcCompat="@drawable/basic_icon" />
 
             <TextView
                 android:id="@+id/textView12"

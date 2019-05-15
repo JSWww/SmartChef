@@ -1,4 +1,6 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.data;
+
+import com.ssu.smartchef.data.IngredientData;
 
 import java.util.ArrayList;
 

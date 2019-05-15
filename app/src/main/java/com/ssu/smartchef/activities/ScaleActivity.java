@@ -1,7 +1,9 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.ssu.smartchef.R;
 
 public class ScaleActivity extends AppCompatActivity {
 

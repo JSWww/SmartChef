@@ -1,4 +1,4 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class googleSignUpActivity extends AppCompatActivity {
+import com.ssu.smartchef.R;
+
+public class GoogleSignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class googleSignUpActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "닉네임은 최소 4문자 이상이어야 합니다.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Intent mainActivityIntent = new Intent(googleSignUpActivity.this, MainActivity.class);
+                    Intent mainActivityIntent = new Intent(GoogleSignUpActivity.this, MainActivity.class);
                     startActivity(mainActivityIntent);
                     LoginActivity loginActivity = (LoginActivity)LoginActivity.loginActivity;
                     loginActivity.finish();
@@ -40,6 +42,4 @@ public class googleSignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
