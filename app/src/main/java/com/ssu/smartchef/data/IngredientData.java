@@ -26,3 +26,4 @@ public class IngredientData {
         this.ingredientWeight = ingredientWeight;
     }
 }
+
