@@ -1,10 +1,14 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerViewAccessibilityDelegate;
+
+import com.ssu.smartchef.adapters.IngredientAdapter;
+import com.ssu.smartchef.data.IngredientData;
+import com.ssu.smartchef.R;
+import com.ssu.smartchef.adapters.RecipeOrderAdapter;
 
 public class RecipeClickActivity extends AppCompatActivity {
 

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">SmartChef</string>
+
+    <string name="emailText">이메일</string>
+    <string name="emailAuth">인증하기</string>
+
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -31,8 +35,6 @@
     <string name="skipText">건너뛰기</string>
 
     <string name="nickNameText">닉네임</string>
-    <string name="emailText">이메일</string>
     <string name="ok">확인</string>
 
-    <string name="emailAuth">인증하기</string>
 </resources>

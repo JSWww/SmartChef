@@ -1,4 +1,4 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ssu.smartchef.data.MainViewData;
+import com.ssu.smartchef.R;
+
 import java.util.ArrayList;
 
 public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder> {
-    private ArrayList<Data> listData = new ArrayList<>();
+    private ArrayList<MainViewData> listData = new ArrayList<>();
 
     @NonNull
     @Override
@@ -29,7 +32,8 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
     public int getItemCount() {
         return listData.size();
     }
-    void addItem(Data data) {
+
+    public void addItem(MainViewData data) {
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
     }
@@ -49,7 +53,7 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
             food = itemView.findViewById(R.id.food);
         }
 
-        void onBind(Data data) {
+        void onBind(MainViewData data) {
             title.setText(data.getTitle());
             writer.setText(data.getWriter());
             tag.setText(data.getTag());

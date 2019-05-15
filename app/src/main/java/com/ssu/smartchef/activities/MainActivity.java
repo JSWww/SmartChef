@@ -1,9 +1,7 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,11 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ssu.smartchef.data.MainViewData;
+import com.ssu.smartchef.R;
+import com.ssu.smartchef.adapters.mainAdapter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,18 +78,18 @@ public class MainActivity extends AppCompatActivity
 
     private void getData() {
         // 임의의 데이터입니다.
-        Data data;
+        MainViewData data;
         List<String> listTitle = Arrays.asList("불고기", "김밥", "탕수육");
         List<String> listwriter = Arrays.asList("아이유", "다현", "김태희");
         List<String> listtag = Arrays.asList("배고파", "맛있음", "미미");
         List<Integer> listResId = Arrays.asList(
-                R.drawable.bulgogi,
-                R.drawable.gimbap,
-                R.drawable.tansuyuk
+                R.drawable.basic_icon,
+                R.drawable.basic_icon,
+                R.drawable.basic_icon
         );
         for (int i = 0; i < listTitle.size(); i++) {
             // 각 List의 값들을 data 객체에 set 해줍니다.
-            data = new Data();
+            data = new MainViewData();
             data.setTitle(listTitle.get(i));
             data.setWriter(listwriter.get(i));
             data.setTag(listtag.get(i));
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.regist) {
-            intent = new Intent(this, RegistRecipe.class);
+            intent = new Intent(this, RegistRecipeActivity.class);
             startActivity(intent);
             //finish();
         } else if (id == R.id.cookscale) {

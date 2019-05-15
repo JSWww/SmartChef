@@ -1,18 +1,19 @@
-package com.ssu.smartchef;
+package com.ssu.smartchef.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.ssu.smartchef.R;
+import com.ssu.smartchef.data.RecipeData;
+import com.ssu.smartchef.adapters.RegistAdapter;
+
 import java.util.ArrayList;
 
-public class RegistRecipe extends AppCompatActivity {
+public class RegistRecipeActivity extends AppCompatActivity {
     Spinner spinner1,spinner2,spinner3,spinner4;
     ArrayList<String> list1,list2,list3,list4;
     RegistAdapter adapter;

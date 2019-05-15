@@ -6,7 +6,7 @@
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
     android:orientation="vertical"
-    tools:context=".EmailLoginActivity">
+    tools:context=".activities.EmailLoginActivity">
 
     <EditText
         android:id="@+id/emailText"
