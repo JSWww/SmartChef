@@ -7,8 +7,13 @@ import java.util.ArrayList;
 
 public class RecipeStepData {
     ArrayList<IngredientData> ingredientArrayList;
-    String Explanation;
+
     String Title;
+    String Explanation;
+    String image;
+
+
+
 
     public String getExplanation() {
         return Explanation;
