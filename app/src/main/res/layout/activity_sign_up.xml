@@ -6,7 +6,7 @@
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
     android:orientation="vertical"
-    tools:context=".activities.GoogleSignUpActivity">
+    tools:context=".activities.SignUpActivity">
 
     <EditText
         android:id="@+id/nickNameText"
@@ -46,5 +46,6 @@
         android:layout_marginLeft="110dp"
         android:layout_marginTop="40dp"
         android:layout_marginRight="110dp"
+        android:onClick="onClick"
         android:text="@string/ok" />
 </LinearLayout>

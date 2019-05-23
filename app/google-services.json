@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:152651743995:android:87fcb66cc6ca320a",
+        "android_client_info": {
+          "package_name": "com.google.firebase.quickstart.auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152651743995-v2eonl898d1l9rhur7ucs3dnltmv5kdk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.quickstart.auth",
+            "certificate_hash": "338431b98e8d8c1c3ca6b36dcd806890c3376a6c"
+          }
+        },
+        {
+          "client_id": "152651743995-r4vdrsgraidmlrhsh2h086jm079bhrh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp9mt673YJJdLDkH0HZZI62_nkAezlEaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152651743995-r4vdrsgraidmlrhsh2h086jm079bhrh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:152651743995:android:53402580f7852b8c",
         "android_client_info": {
           "package_name": "com.ssu.smartchef"

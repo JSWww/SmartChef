@@ -37,4 +37,6 @@
     <string name="nickNameText">닉네임</string>
     <string name="ok">확인</string>
 
+    <string name="loading">Loading...</string>
+
 </resources>

@@ -1,13 +1,18 @@
 package com.ssu.smartchef.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ssu.smartchef.activities.RecipeClickActivity;
 import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
 
@@ -37,27 +42,35 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
     }
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+
+
+    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView title;
         private TextView writer;
-        private TextView tag;
         private ImageView food;
 
         ItemViewHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             title = itemView.findViewById(R.id.title);
             writer = itemView.findViewById(R.id.writer);
-            tag = itemView.findViewById(R.id.tag);
             food = itemView.findViewById(R.id.food);
         }
 
         void onBind(MainViewData data) {
             title.setText(data.getTitle());
             writer.setText(data.getWriter());
-            tag.setText(data.getTag());
             food.setImageResource(data.getResId());
         }
+
+        @Override
+        public void onClick(View v) {
+            Context context = v.getContext();
+            Intent intent = new Intent(context, RecipeClickActivity.class);
+            context.startActivity(intent);
+        }
     }
+
 }
