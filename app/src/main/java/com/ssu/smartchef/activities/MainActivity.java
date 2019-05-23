@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             //finish();
         } else if (id == R.id.cookscale) {
+            intent = new Intent(this, ManualScaleActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.cookhelp) {
 

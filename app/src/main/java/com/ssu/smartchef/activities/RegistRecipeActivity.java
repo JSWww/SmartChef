@@ -4,7 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.ssu.smartchef.R;
@@ -17,6 +20,7 @@ public class RegistRecipeActivity extends AppCompatActivity {
     Spinner spinner1,spinner2,spinner3,spinner4;
     ArrayList<String> list1,list2,list3,list4;
     RegistAdapter adapter;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +46,23 @@ public class RegistRecipeActivity extends AppCompatActivity {
         spinner3.setAdapter(spinner3Adapter);
         spinner4.setAdapter(spinner4Adapter);
         init();
-        RecipeData data = new RecipeData();
-        adapter.addItem(data);
-        adapter.notifyDataSetChanged();
+        ImageView add_step = findViewById(R.id.add_step_btn);
+        add_step.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+                layoutParams.height = layoutParams.height*2;
+                adapter.addItem(new RecipeData());
+                recyclerView.setLayoutParams(layoutParams);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
     private void init() {
-        RecyclerView recyclerView = findViewById(R.id.regist_recyclerView);
-
+        recyclerView = findViewById(R.id.regist_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        adapter = new RegistAdapter();
+        adapter = new RegistAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
     }
 }

@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.ssu.smartchef.R;
 
-public class ScaleActivity extends AppCompatActivity {
+public class ManualScaleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scale);
+        setContentView(R.layout.activity_manual_scale);
     }
 }
