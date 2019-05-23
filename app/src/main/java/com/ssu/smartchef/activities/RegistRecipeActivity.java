@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.ssu.smartchef.R;
-import com.ssu.smartchef.data.RecipeData;
+import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class RegistRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                 layoutParams.height = layoutParams.height*2;
-                adapter.addItem(new RecipeData());
+                adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
                 adapter.notifyDataSetChanged();
             }

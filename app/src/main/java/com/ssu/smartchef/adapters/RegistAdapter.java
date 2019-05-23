@@ -7,23 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.data.IngredientData;
-import com.ssu.smartchef.data.MainViewData;
-import com.ssu.smartchef.data.RecipeData;
+import com.ssu.smartchef.data.RecipeStepData;
 
 import java.util.ArrayList;
 
-import static android.support.v4.content.ContextCompat.getSystemService;
-
 public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHolder> {
-    private ArrayList<RecipeData> listData = new ArrayList<>();
+    private ArrayList<RecipeStepData> listData = new ArrayList<>();
     private Context mContext;
 
     public RegistAdapter(Context mContext) {
@@ -47,7 +41,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         return listData.size();
     }
 
-    public void addItem(RecipeData data) {
+    public void addItem(RecipeStepData data) {
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
     }
@@ -71,7 +65,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
             itemView.setOnClickListener(this);
         }
 
-        void onBind(RecipeData data) {
+        void onBind(RecipeStepData data) {
 
         }
 

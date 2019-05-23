@@ -1,46 +1,23 @@
 package com.ssu.smartchef.data;
 
-import com.ssu.smartchef.adapters.RegistIngredientAdapter;
-import com.ssu.smartchef.data.IngredientData;
-
 import java.util.ArrayList;
 
 public class RecipeData {
-    ArrayList<IngredientData> ingredientArrayList;
-    String Explanation;
-    String Title;
-    public RegistIngredientAdapter adapter;
 
-    public RegistIngredientAdapter getAdapter() {
-        return adapter;
-    }
+    private String title;
+    private String image;
+    private String explain;
+    private int category1;
+    private int category2;
+    private int category3;
+    private int category4;
+    private int numPerson;
+    private int time;
 
-    public void setAdapter(RegistIngredientAdapter adapter) {
-        this.adapter = adapter;
-    }
+    ArrayList<RecipeStepData> stepList = new ArrayList<>();
 
+    private String nickName;
+    private int id;
 
-
-    public String getExplanation() {
-        return Explanation;
-    }
-
-    public void setExplanation(String explanation) {
-        Explanation = explanation;
-    }
-
-    public ArrayList<IngredientData> getIngredientArrayList() {
-        return ingredientArrayList;
-    }
-
-    public void addIngredientArrayList(String ingredient, String weight) {
-        this.ingredientArrayList.add(new IngredientData(ingredient,weight));
-    }
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String title) {
-        Title = title;
-    }
+    RecipeData() {}
 }
