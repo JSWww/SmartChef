@@ -1,6 +1,7 @@
 package com.ssu.smartchef.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +12,15 @@ import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.mainAdapter;
@@ -25,15 +28,22 @@ import com.ssu.smartchef.adapters.mainAdapter;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private mainAdapter adapter;
+    private String nickName;
+    private TextView nickNameTextView;
+    private Button loginButton;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -56,11 +66,59 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
         ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        Intent intent = getIntent();
+        nickName = intent.getStringExtra("nickName");
+
+        View nav_header_view = navigationView.getHeaderView(0);
+        nickNameTextView = nav_header_view.findViewById(R.id.nickNameTextView);
+        loginButton = nav_header_view.findViewById(R.id.loginButton);
+
+        if (nickName != null) {
+            nickNameTextView.setText(nickName);
+            loginButton.setText("logout");
+        }
+        
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                if (user != null) {
+
+                    mAuth.signOut();
+                    nickNameTextView.setText("로그인하세요");
+                    loginButton.setText("login");
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putString("nickName", null);
+                    editor.putString("email", null);
+                    editor.commit();
+                }
+                else {
+
+//                    SharedPreferences sharedPreferences = getSharedPreferences("isSkipPressed", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//                    editor.putBoolean("isSkipPressed", false);
+//                    editor.commit();
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.putExtra("isSkipPressed", true);
+                    startActivity(intent);
+                }
+
+            }
+        });
         init();
         getData();
 

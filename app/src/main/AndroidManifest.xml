@@ -15,8 +15,24 @@
         <activity android:name=".activities.ScaleActivity" />
         <activity android:name=".activities.RecipeClickActivity">
         </activity>
-        <activity android:name=".activities.EmailLoginActivity" />
-        <activity android:name=".activities.GoogleSignUpActivity" />
+
+        <activity
+            android:name=".activities.EmailLoginActivity"
+            android:label="SmartChef"
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="smartchef-dc7ae.firebaseapp.com"
+                    android:scheme="https" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".activities.SignUpActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
