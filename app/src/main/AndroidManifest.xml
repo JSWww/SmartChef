@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.ManualScaleActivity"></activity>
-        <activity android:name=".activities.RegistRecipeActivity" />
+        <activity android:name=".activities.RegistRecipeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.RecipeClickActivity"></activity>
         <activity
             android:name=".activities.EmailLoginActivity"

@@ -9,22 +9,36 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.widget.TextView;
 
 import com.ssu.smartchef.R;
-import com.ssu.smartchef.data.RecipeData;
+import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
 import java.util.ArrayList;
 
-public class RegistRecipeActivity extends AppCompatActivity {
+public class RegistRecipeActivity extends BaseActivity {
     Spinner spinner1,spinner2,spinner3,spinner4;
     ArrayList<String> list1,list2,list3,list4;
     RegistAdapter adapter;
     RecyclerView recyclerView;
+    TextView save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist_recipe);
+        Toolbar regist_toolbar;
+        regist_toolbar = findViewById(R.id.regist_toolbar);
+        setSupportActionBar(regist_toolbar);
+        save = findViewById(R.id.regist_save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         spinner1 = (Spinner)findViewById(R.id.spinner1);
         spinner2 = (Spinner)findViewById(R.id.spinner2);
         spinner3 = (Spinner)findViewById(R.id.spinner3);
@@ -52,7 +66,7 @@ public class RegistRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                 layoutParams.height = layoutParams.height*2;
-                adapter.addItem(new RecipeData());
+                adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
                 adapter.notifyDataSetChanged();
             }

@@ -5,21 +5,10 @@ import com.ssu.smartchef.data.IngredientData;
 
 import java.util.ArrayList;
 
-public class RecipeData {
+public class RecipeStepData {
     ArrayList<IngredientData> ingredientArrayList;
     String Explanation;
     String Title;
-    public RegistIngredientAdapter adapter;
-
-    public RegistIngredientAdapter getAdapter() {
-        return adapter;
-    }
-
-    public void setAdapter(RegistIngredientAdapter adapter) {
-        this.adapter = adapter;
-    }
-
-
 
     public String getExplanation() {
         return Explanation;
