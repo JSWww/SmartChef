@@ -2,7 +2,9 @@ package com.ssu.smartchef.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +23,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.mainAdapter;
@@ -105,13 +114,6 @@ public class MainActivity extends BaseActivity
                     editor.commit();
                 }
                 else {
-
-//                    SharedPreferences sharedPreferences = getSharedPreferences("isSkipPressed", MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//                    editor.putBoolean("isSkipPressed", false);
-//                    editor.commit();
-
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra("isSkipPressed", true);
                     startActivity(intent);
@@ -135,29 +137,29 @@ public class MainActivity extends BaseActivity
     }
 
     private void getData() {
-        // 임의의 데이터입니다.
-        MainViewData data;
-        List<String> listTitle = Arrays.asList("불고기", "김밥", "탕수육");
-        List<String> listwriter = Arrays.asList("아이유", "다현", "김태희");
-        List<String> listtag = Arrays.asList("배고파", "맛있음", "미미");
-        List<Integer> listResId = Arrays.asList(
-                R.drawable.basic_icon,
-                R.drawable.basic_icon,
-                R.drawable.basic_icon
-        );
-        for (int i = 0; i < listTitle.size(); i++) {
-            // 각 List의 값들을 data 객체에 set 해줍니다.
-            data = new MainViewData();
-            data.setTitle(listTitle.get(i));
-            data.setWriter(listwriter.get(i));
-            data.setTag(listtag.get(i));
-            data.setResId(listResId.get(i));
 
-            // 각 값이 들어간 data를 adapter에 추가합니다.
-            adapter.addItem(data);
-        }
-        // adapter의 값이 변경되었다는 것을 알려줍니다.
-        adapter.notifyDataSetChanged();
+        DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference recipelistRef = mRootRef.child("recipelist");
+
+        recipelistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot recipeSnapshot : dataSnapshot.getChildren()) {
+                    MainViewData data = new MainViewData();
+
+                    data.setTitle(recipeSnapshot.child("title").getValue(String.class));
+                    data.setWriter(recipeSnapshot.child("nickname").getValue(String.class));
+                    data.setIamgeURL(recipeSnapshot.child("image").getValue(String.class));
+                    adapter.addItem(data);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

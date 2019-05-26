@@ -28,7 +28,7 @@ public class RecipeStepData {
     }
 
     public void addIngredientArrayList(String ingredient, String weight) {
-        this.ingredientArrayList.add(new IngredientData(ingredient,weight));
+        this.ingredientArrayList.add(new IngredientData(ingredient,weight,true));
     }
     public String getTitle() {
         return Title;

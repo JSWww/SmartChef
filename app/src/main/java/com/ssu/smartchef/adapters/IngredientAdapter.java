@@ -1,6 +1,7 @@
 package com.ssu.smartchef.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.regist_ingredient_item, viewGroup, false);
         return new ItemViewHolder(view);
     }
 
@@ -47,13 +48,18 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ingredientText = itemView.findViewById(R.id.textView3);
-            ingredientWeight = itemView.findViewById(R.id.textView2);
+            ingredientText = itemView.findViewById(R.id.regist_ingredient_name);
+            ingredientWeight = itemView.findViewById(R.id.regist_ingredient_weight);
         }
 
         void onBind(IngredientData data) {
             ingredientText.setText(data.getIngredientName());
             ingredientWeight.setText(data.getIngredientWeight());
+
+            if (!data.isEditable()) {
+                ingredientText.setEnabled(false);
+                ingredientWeight.setEnabled(false);
+            }
         }
     }
 }

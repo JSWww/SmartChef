@@ -8,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.ssu.smartchef.activities.RecipeClickActivity;
 import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
@@ -62,13 +61,17 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
         void onBind(MainViewData data) {
             title.setText(data.getTitle());
             writer.setText(data.getWriter());
-            food.setImageResource(data.getResId());
+
+            Glide.with(itemView)
+                        .load(data.getIamgeURL())
+                        .into(food);
         }
 
         @Override
         public void onClick(View v) {
             Context context = v.getContext();
             Intent intent = new Intent(context, RecipeClickActivity.class);
+            intent.putExtra("recipeID", getAdapterPosition() +"");
             context.startActivity(intent);
         }
     }

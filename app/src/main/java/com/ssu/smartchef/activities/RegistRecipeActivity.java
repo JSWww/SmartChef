@@ -48,6 +48,7 @@ public class RegistRecipeActivity extends AppCompatActivity {
         init();
         ImageView add_step = findViewById(R.id.add_step_btn);
         add_step.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
