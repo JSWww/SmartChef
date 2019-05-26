@@ -1,8 +1,5 @@
 package com.ssu.smartchef.data;
 
-import com.ssu.smartchef.adapters.RegistIngredientAdapter;
-import com.ssu.smartchef.data.IngredientData;
-
 import java.util.ArrayList;
 
 public class RecipeStepData {

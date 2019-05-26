@@ -26,7 +26,6 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <data
                     android:host="smartchef-dc7ae.firebaseapp.com"
                     android:scheme="https" />
