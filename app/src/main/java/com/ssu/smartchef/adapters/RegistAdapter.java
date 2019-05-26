@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +30,44 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.regist_item, viewGroup, false);
-        return new RegistAdapter.ItemViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RegistAdapter.ItemViewHolder itemViewHolder, int i) {
+    public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
+        itemViewHolder.title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listData.get(i).setTitle(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        itemViewHolder.explain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listData.get(i).setExplain(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -53,7 +87,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         private ImageView food;
         public RecyclerView items;
         public ImageView add_btn;
-        RegistIngredientAdapter itemListDataAdapter = new RegistIngredientAdapter();
+        IngredientAdapter itemListDataAdapter = new IngredientAdapter();
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -62,22 +96,20 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
             food = itemView.findViewById(R.id.regist_step_food);
             items = itemView.findViewById(R.id.regist_ingredient_view);
             add_btn = itemView.findViewById(R.id.add_ingredient_btn);
-            itemView.setOnClickListener(this);
+            add_btn.setOnClickListener(this);
         }
 
         void onBind(RecipeStepData data) {
-
+            title.setText(data.getTitle());
+            explain.setText(data.getExplain());
         }
 
         @Override
         public void onClick(View v) {
-            ViewGroup.LayoutParams layoutParams = items.getLayoutParams();
             itemListDataAdapter.addItem(new IngredientData());
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(v.getContext());
             items.setAdapter(itemListDataAdapter);
             items.setLayoutManager(linearLayoutManager);
-            items.setLayoutParams(layoutParams);
-            itemListDataAdapter.notifyDataSetChanged();
         }
     }
 }
