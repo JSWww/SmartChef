@@ -8,6 +8,7 @@ public class IngredientData {
         this.ingredientWeight = Weight;
         this.isEditable = isEditable;
     }
+
     private String ingredientName;
     private String ingredientWeight;
     private boolean isEditable = true;
