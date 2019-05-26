@@ -12,8 +12,8 @@ public class RecipeStepData {
     String Explanation;
     String image;
 
-
-
+    public RecipeStepData() {
+    }
 
     public String getExplanation() {
         return Explanation;

@@ -10,16 +10,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ssu.smartchef.R;
+import com.ssu.smartchef.data.RecipeData;
 import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
 import java.util.ArrayList;
 
-public class RegistRecipeActivity extends BaseActivity {
+public class RegistRecipeActivity extends AppCompatActivity {
     Spinner spinner1,spinner2,spinner3,spinner4;
     ArrayList<String> list1,list2,list3,list4;
     RegistAdapter adapter;
@@ -33,12 +35,6 @@ public class RegistRecipeActivity extends BaseActivity {
         regist_toolbar = findViewById(R.id.regist_toolbar);
         setSupportActionBar(regist_toolbar);
         save = findViewById(R.id.regist_save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         spinner1 = (Spinner)findViewById(R.id.spinner1);
         spinner2 = (Spinner)findViewById(R.id.spinner2);
         spinner3 = (Spinner)findViewById(R.id.spinner3);
@@ -69,6 +65,13 @@ public class RegistRecipeActivity extends BaseActivity {
                 adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
                 adapter.notifyDataSetChanged();
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecipeData data = new RecipeData(getApplicationContext());
+                data.SaveDB();
             }
         });
     }
