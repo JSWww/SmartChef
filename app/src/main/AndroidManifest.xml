@@ -15,8 +15,10 @@
 
         </activity>
         <activity android:name=".activities.ManualScaleActivity" />
-        <activity android:name=".activities.RegistRecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RegistRecipeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".activities.RecipeClickActivity" />
         <activity
             android:name=".activities.EmailLoginActivity"
