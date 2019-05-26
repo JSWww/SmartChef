@@ -4,44 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.RegistRecipeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       >
+        android:layout_height="wrap_content">
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/regist_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <SearchView
-                android:id="@+id/searchtext"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl" />
-
-            <ImageView
-                android:id="@+id/micButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_mic" />
-
-            <ImageView
+            <TextView
                 android:id="@+id/regist_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_camera" />
+                android:layout_gravity="right"
+                android:text="저장"
+                android:textSize="25dp" />
         </android.support.v7.widget.Toolbar>
 
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_regist" />
 
 
 </android.support.design.widget.CoordinatorLayout>

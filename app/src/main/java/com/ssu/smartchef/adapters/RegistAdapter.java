@@ -71,10 +71,13 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
         @Override
         public void onClick(View v) {
+            ViewGroup.LayoutParams layoutParams = items.getLayoutParams();
             itemListDataAdapter.addItem(new IngredientData());
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(v.getContext());
-            items.setLayoutManager(linearLayoutManager);
             items.setAdapter(itemListDataAdapter);
+            items.setLayoutManager(linearLayoutManager);
+            items.setLayoutParams(layoutParams);
+            itemListDataAdapter.notifyDataSetChanged();
         }
     }
 }
