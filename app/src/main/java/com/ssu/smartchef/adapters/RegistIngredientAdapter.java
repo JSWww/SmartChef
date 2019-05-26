@@ -56,8 +56,6 @@ public class RegistIngredientAdapter extends RecyclerView.Adapter<RegistIngredie
         }
 
         void onBind(IngredientData data) {
-            ingredient.setText("aaa");
-            weight.setText("bbb");
         }
     }
 }

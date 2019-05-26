@@ -1,6 +1,7 @@
 package com.ssu.smartchef.data;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -85,7 +86,24 @@ public class RecipeData {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 id = dataSnapshot.getChildrenCount();
                 recipeRef.child(id+"").child("title").setValue(title);
-
+                recipeRef.child(id+"").child("image").setValue(image);
+                recipeRef.child(id+"").child("explain").setValue(explain);
+                recipeRef.child(id+"").child("category1").setValue(category1);
+                recipeRef.child(id+"").child("category2").setValue(category2);
+                recipeRef.child(id+"").child("category3").setValue(category3);
+                recipeRef.child(id+"").child("category4").setValue(category4);
+                recipeRef.child(id+"").child("numPerson").setValue(numPerson);
+                recipeRef.child(id+"").child("time").setValue(time);
+                recipeRef.child(id+"").child("nickname").setValue(nickName);
+                for(int i = 0 ; i < stepList.size();i++){
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepExplain").setValue(stepList.get(i).getExplain());
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepTitle").setValue(stepList.get(i).getTitle());
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepImage").setValue(stepList.get(i).getImage());
+                    for(int j = 0 ; j < stepList.get(i).ingredientArrayList.size() ; j++){
+                        recipeRef.child(id+"").child("stepList").child(i+"").child("ingredientList").child(j+"").child("weight").setValue(stepList.get(i).ingredientArrayList.get(j).getIngredientWeight());
+                        recipeRef.child(id+"").child("stepList").child(i+"").child("ingredientList").child(j+"").child("ingredient").setValue(stepList.get(i).ingredientArrayList.get(j).getIngredientName());
+                    }
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

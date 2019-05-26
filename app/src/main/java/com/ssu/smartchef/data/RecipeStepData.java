@@ -9,18 +9,30 @@ public class RecipeStepData {
     ArrayList<IngredientData> ingredientArrayList;
 
     String Title;
-    String Explanation;
+    String Explain;
     String image;
+
+    public void setExplain(String explain) {
+        Explain = explain;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public RecipeStepData() {
     }
 
-    public String getExplanation() {
-        return Explanation;
+    public String getExplain() {
+        return Explain;
     }
 
-    public void setExplanation(String explanation) {
-        Explanation = explanation;
+    public void setExplanation(String explain) {
+        Explain = explain;
     }
 
     public ArrayList<IngredientData> getIngredientArrayList() {
