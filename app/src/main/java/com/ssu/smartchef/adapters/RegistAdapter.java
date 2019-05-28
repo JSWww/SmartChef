@@ -19,7 +19,7 @@ import com.ssu.smartchef.data.RecipeStepData;
 import java.util.ArrayList;
 
 public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHolder> {
-    private ArrayList<RecipeStepData> listData = new ArrayList<>();
+    public ArrayList<RecipeStepData> listData = new ArrayList<>();
     private Context mContext;
 
     public RegistAdapter(Context mContext) {
@@ -36,6 +36,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
+        listData.get(i).setIngredientArrayList(itemViewHolder.itemListDataAdapter.listData);
         itemViewHolder.title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

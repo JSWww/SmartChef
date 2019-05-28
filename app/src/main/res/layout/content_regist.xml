@@ -21,7 +21,7 @@
             android:text="레시피 제목" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/regist_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
@@ -30,7 +30,7 @@
             android:inputType="text" />
 
         <ImageView
-            android:id="@+id/stepImage"
+            android:id="@+id/regist_image"
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:background="@color/colorPrimary"
@@ -43,7 +43,7 @@
             android:text="요리소개" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/regist_explain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
@@ -115,6 +115,7 @@
                     android:text="인원" />
 
                 <EditText
+                    android:id="@+id/regist_person"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/colorPrimaryDark"
@@ -134,6 +135,7 @@
                     android:text="시간" />
 
                 <EditText
+                    android:id="@+id/regist_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@color/colorPrimaryDark"
