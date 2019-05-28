@@ -45,7 +45,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setTitle(s.toString());
+                listData.get(i).setStepTitle(s.toString());
             }
 
             @Override
@@ -61,7 +61,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setExplain(s.toString());
+                listData.get(i).setStepExplain(s.toString());
             }
 
             @Override
@@ -101,8 +101,8 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         }
 
         void onBind(RecipeStepData data) {
-            title.setText(data.getTitle());
-            explain.setText(data.getExplain());
+            title.setText(data.getStepTitle());
+            explain.setText(data.getStepExplain());
         }
 
         @Override

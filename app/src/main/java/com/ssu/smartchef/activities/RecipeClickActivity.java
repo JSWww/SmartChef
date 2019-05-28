@@ -32,6 +32,7 @@ public class RecipeClickActivity extends AppCompatActivity {
     private DatabaseReference recipeRef;
 
     private RecyclerView ingredientRecycler;
+    private RecyclerView recipeOrderRecycler;
 
     private TextView recipeName;
     private TextView nickName;
@@ -52,16 +53,20 @@ public class RecipeClickActivity extends AppCompatActivity {
         recipeFood = findViewById(R.id.recipeFood);
 
         ingredientRecycler = findViewById(R.id.ingredientRecycler);
-
         ingredientRecycler.setNestedScrollingEnabled(false);
         ingredientRecycler.setHasFixedSize(false);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        ingredientRecycler.setLayoutManager(linearLayoutManager);
-
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+        ingredientRecycler.setLayoutManager(linearLayoutManager1);
         ingredientAdapter = new IngredientAdapter();
         ingredientRecycler.setAdapter(ingredientAdapter);
 
+        recipeOrderRecycler = findViewById(R.id.recipeOrderRecycler);
+        recipeOrderRecycler.setNestedScrollingEnabled(false);
+        recipeOrderRecycler.setHasFixedSize(false);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(this);
+        recipeOrderRecycler.setLayoutManager(linearLayoutManager2);
+        recipeOrderAdapter = new RecipeOrderAdapter();
+        recipeOrderRecycler.setAdapter(recipeOrderAdapter);
 
         Intent intent = getIntent();
         String recipeID = intent.getStringExtra("recipeID");
@@ -82,19 +87,28 @@ public class RecipeClickActivity extends AppCompatActivity {
                         .into(recipeFood);
 
                 for (DataSnapshot stepList : dataSnapshot.child("stepList").getChildren()) {
+                    RecipeStepData recipeStepData = new RecipeStepData();
+                    recipeStepData.setStepTitle(stepList.child("stepTitle").getValue(String.class));
+                    recipeStepData.setStepExplain(stepList.child("stepExplain").getValue(String.class));
+                    recipeStepData.setStepImageURL(stepList.child("stepImage").getValue(String.class));
+
                     for(DataSnapshot step : stepList.child("ingredientList").getChildren()) {
                         IngredientData data = new IngredientData();
                         data.setEditable(false);
                         data.setIngredientName(step.child("ingredient").getValue(String.class));
                         data.setIngredientWeight(step.child("weight").getValue(Integer.class) + "g");
                         ingredientAdapter.addItem(data);
+                        recipeStepData.addIngredientArrayList(data);
                     }
+
+                    recipeOrderAdapter.addItem(recipeStepData);
                 }
 
                 ViewGroup.LayoutParams layoutParams = ingredientRecycler.getLayoutParams();
                 layoutParams.height = layoutParams.height * ingredientAdapter.getItemCount();
                 ingredientRecycler.setLayoutParams(layoutParams);
                 ingredientAdapter.notifyDataSetChanged();
+                recipeOrderAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -102,21 +116,5 @@ public class RecipeClickActivity extends AppCompatActivity {
 
             }
         });
-
-
-        /* -------------- 레시피 순서 부분 ------------------- */
-        RecyclerView recipeOrderRecycler = findViewById(R.id.recipeOrderRecycler);
-
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
-        recipeOrderRecycler.setLayoutManager(linearLayoutManager1);
-
-        recipeOrderAdapter = new RecipeOrderAdapter();
-        recipeOrderRecycler.setAdapter(recipeOrderAdapter);
-
-        IngredientData data6 = new IngredientData();
-        recipeOrderAdapter.addItem(data6);
-
-        ingredientAdapter.notifyDataSetChanged();
-
     }
 }
