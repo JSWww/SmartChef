@@ -53,7 +53,7 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
             super(itemView);
 
             itemView.setOnClickListener(this);
-            title = itemView.findViewById(R.id.title);
+            title = itemView.findViewById(R.id.regist_title);
             writer = itemView.findViewById(R.id.writer);
             food = itemView.findViewById(R.id.food);
         }

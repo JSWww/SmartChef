@@ -17,16 +17,16 @@ import java.util.ArrayList;
 
 public class RecipeData {
 
-    private String title;
-    private String image;
-    private String explain;
-    private int category1;
-    private int category2;
-    private int category3;
-    private int category4;
-    private int numPerson;
-    private int time;
-    private String nickName;
+    private String title="test";
+    private String image="test";
+    private String explain="test";
+    private int category1=0;
+    private int category2=0;
+    private int category3=0;
+    private int category4=0;
+    private int numPerson=100;
+    private int time=10;
+    private String nickName="test";
     static long id;
     Context mcontext;
 
@@ -36,6 +36,10 @@ public class RecipeData {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public void setExplain(String explain) {
@@ -74,7 +78,7 @@ public class RecipeData {
         this.nickName = nickName;
     }
 
-    ArrayList<RecipeStepData> stepList = new ArrayList<>();
+    public ArrayList<RecipeStepData> stepList = new ArrayList<>();
 
     public RecipeData() {}
     public RecipeData(Context mcontext) {this.mcontext = mcontext;}

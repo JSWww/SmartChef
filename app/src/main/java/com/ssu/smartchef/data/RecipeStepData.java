@@ -28,8 +28,8 @@ public class RecipeStepData {
         return Explain;
     }
 
-    public void setExplanation(String explain) {
-        Explain = explain;
+    public void setIngredientArrayList(ArrayList<IngredientData> ingredientArrayList) {
+        this.ingredientArrayList = ingredientArrayList;
     }
 
     public ArrayList<IngredientData> getIngredientArrayList() {
