@@ -66,9 +66,8 @@ public class testActivity extends AppCompatActivity implements View.OnClickListe
                 Glide.with(getApplicationContext())
                         .load(uri.toString())
                         .into(imageView);
-
-
             }
+
         });
 
 

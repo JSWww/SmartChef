@@ -96,9 +96,9 @@ public class RecipeData {
                 recipeRef.child(id+"").child("time").setValue(time);
                 recipeRef.child(id+"").child("nickname").setValue(nickName);
                 for(int i = 0 ; i < stepList.size();i++){
-                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepExplain").setValue(stepList.get(i).getExplain());
-                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepTitle").setValue(stepList.get(i).getTitle());
-                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepImage").setValue(stepList.get(i).getImage());
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepExplain").setValue(stepList.get(i).getStepExplain());
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepTitle").setValue(stepList.get(i).getStepTitle());
+                    recipeRef.child(id+"").child("stepList").child(i+"").child("stepImage").setValue(stepList.get(i).getStepImageURL());
                     for(int j = 0 ; j < stepList.get(i).ingredientArrayList.size() ; j++){
                         recipeRef.child(id+"").child("stepList").child(i+"").child("ingredientList").child(j+"").child("weight").setValue(stepList.get(i).ingredientArrayList.get(j).getIngredientWeight());
                         recipeRef.child(id+"").child("stepList").child(i+"").child("ingredientList").child(j+"").child("ingredient").setValue(stepList.get(i).ingredientArrayList.get(j).getIngredientName());

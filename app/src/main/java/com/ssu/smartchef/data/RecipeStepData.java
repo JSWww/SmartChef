@@ -5,45 +5,43 @@ import java.util.ArrayList;
 public class RecipeStepData {
     ArrayList<IngredientData> ingredientArrayList;
 
-    String Title;
-    String Explain;
-    String image;
-
-    public void setExplain(String explain) {
-        Explain = explain;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private String stepTitle;
+    private String stepExplain;
+    private String stepImageURL;
 
     public RecipeStepData() {
+        ingredientArrayList = new ArrayList<>();
     }
 
-    public String getExplain() {
-        return Explain;
+    public String getStepTitle() {
+        return stepTitle;
     }
 
-    public void setExplanation(String explain) {
-        Explain = explain;
+    public void setStepTitle(String stepTitle) {
+        this.stepTitle = stepTitle;
+    }
+
+    public String getStepExplain() {
+        return stepExplain;
+    }
+
+    public void setStepExplain(String stepExplain) {
+        this.stepExplain = stepExplain;
+    }
+
+    public String getStepImageURL() {
+        return stepImageURL;
+    }
+
+    public void setStepImageURL(String stepImageURL) {
+        this.stepImageURL = stepImageURL;
     }
 
     public ArrayList<IngredientData> getIngredientArrayList() {
         return ingredientArrayList;
     }
 
-    public void addIngredientArrayList(String ingredient, String weight) {
-        this.ingredientArrayList.add(new IngredientData(ingredient,weight,true));
-    }
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String title) {
-        Title = title;
+    public void addIngredientArrayList(IngredientData data) {
+        this.ingredientArrayList.add(data);
     }
 }
