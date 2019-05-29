@@ -31,6 +31,7 @@ public class RecipeStepData {
 
     public void setIngredientArrayList(ArrayList<IngredientData> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
+    }
 
     public String getStepImageURL() {
         return stepImageURL;

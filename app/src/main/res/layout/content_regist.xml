@@ -64,7 +64,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/common_google_signin_btn_text_dark_default">
+                android:background="@color/colorPrimaryDark">
 
                 <Spinner
                     android:id="@+id/spinner1"
@@ -80,7 +80,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/common_google_signin_btn_text_dark_default">
+                android:background="@color/colorPrimaryDark">
 
                 <Spinner
                     android:id="@+id/spinner3"
@@ -107,7 +107,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/common_google_signin_btn_text_dark_default">
+                android:background="@color/colorPrimaryDark">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -127,7 +127,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/common_google_signin_btn_text_dark_default">
+                android:background="@color/colorPrimaryDark">
 
                 <TextView
                     android:layout_width="wrap_content"

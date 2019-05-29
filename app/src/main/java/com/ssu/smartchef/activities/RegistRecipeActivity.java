@@ -34,7 +34,9 @@ import com.ssu.smartchef.data.RecipeData;
 import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -126,18 +128,6 @@ public class RegistRecipeActivity extends BaseActivity {
                 data.setNickName(nickName);
                 data.setStepList(adapter.listData);
                 uploadFile();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                storageRef.child(filename).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        data.setImage(uri.toString());
-                        data.SaveDB();
-                    }
-                });
             }
         });
     }
@@ -177,8 +167,9 @@ public class RegistRecipeActivity extends BaseActivity {
             Date now = new Date();
             filename = formatter.format(now) + ".png";
             //storage 주소와 폴더 파일명을 지정해 준다.
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://smartchef-dc7ae.appspot.com").child(filename);
+            storageRef = storage.getReferenceFromUrl("gs://smartchef-dc7ae.appspot.com").child(filename);
             //올라가거라...
+
             storageRef.putFile(filePath)
                     //성공시
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -186,6 +177,13 @@ public class RegistRecipeActivity extends BaseActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss(); //업로드 진행 Dialog 상자
                             Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
+                            taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    data.setImage(uri.toString());
+                                    data.SaveDB();
+                                }
+                            });
                         }
                     })
                     //실패시

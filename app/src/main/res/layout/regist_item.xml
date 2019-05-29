@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:background="@color/common_google_signin_btn_text_dark"
+        android:background="@color/colorPrimaryDark"
         android:hint="제목" />
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:background="@color/common_google_signin_btn_text_dark"
+            android:background="@color/colorPrimaryDark"
             android:hint="설명을 입력해주세요" />
 
         <ImageView
