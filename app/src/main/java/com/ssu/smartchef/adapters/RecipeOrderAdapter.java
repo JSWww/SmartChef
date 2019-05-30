@@ -42,6 +42,10 @@ public class RecipeOrderAdapter extends RecyclerView.Adapter<RecipeOrderAdapter.
         listData.add(data);
     }
 
+    public ArrayList<RecipeStepData> getListData() {
+        return listData;
+    }
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView step;

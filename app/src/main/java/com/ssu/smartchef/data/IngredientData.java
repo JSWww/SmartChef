@@ -2,7 +2,7 @@ package com.ssu.smartchef.data;
 
 public class IngredientData {
     public IngredientData() {}
-    public IngredientData(String Name, String Weight, boolean isEditable)
+    public IngredientData(String Name, int Weight, boolean isEditable)
     {
         this.ingredientName = Name;
         this.ingredientWeight = Weight;
@@ -10,14 +10,14 @@ public class IngredientData {
     }
 
     private String ingredientName;
-    private String ingredientWeight;
+    private int ingredientWeight;
     private boolean isEditable = true;
 
     public String getIngredientName() {
         return ingredientName;
     }
 
-    public String getIngredientWeight() {
+    public int getIngredientWeight() {
         return ingredientWeight;
     }
 
@@ -25,7 +25,7 @@ public class IngredientData {
         this.ingredientName = ingredientName;
     }
 
-    public void setIngredientWeight(String ingredientWeight) {
+    public void setIngredientWeight(int ingredientWeight) {
         this.ingredientWeight = ingredientWeight;
     }
 

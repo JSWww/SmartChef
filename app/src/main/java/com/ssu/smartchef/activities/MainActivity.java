@@ -66,10 +66,10 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.micButton :
+                    case R.id.micButton:
                         Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
                         break ;
-                    case R.id.regist_save:
+                    case R.id.cameraButton:
                         Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
                         break ;
                 }
@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity
         };
 
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        ImageView cameraButton = (ImageView)findViewById(R.id.regist_save);
+        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

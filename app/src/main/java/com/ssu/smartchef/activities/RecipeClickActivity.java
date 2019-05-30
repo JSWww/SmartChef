@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,9 @@ import com.ssu.smartchef.adapters.RecipeOrderAdapter;
 import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.data.RecipeStepData;
 
-public class RecipeClickActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class RecipeClickActivity extends AppCompatActivity implements View.OnClickListener {
 
     private IngredientAdapter ingredientAdapter;
     private RecipeOrderAdapter recipeOrderAdapter;
@@ -38,6 +41,7 @@ public class RecipeClickActivity extends AppCompatActivity {
     private TextView nickName;
     private TextView recipeExplain;
     private TextView numPerson;
+    private int numPerson_t;
     private ImageView recipeFood;
 
 
@@ -50,6 +54,7 @@ public class RecipeClickActivity extends AppCompatActivity {
         nickName = findViewById(R.id.nickName);
         recipeExplain = findViewById(R.id.recipeExplain);
         numPerson = findViewById(R.id.numPerson);
+        numPerson_t = 1;
         recipeFood = findViewById(R.id.recipeFood);
 
         ingredientRecycler = findViewById(R.id.ingredientRecycler);
@@ -80,7 +85,6 @@ public class RecipeClickActivity extends AppCompatActivity {
                 recipeName.setText(dataSnapshot.child("title").getValue(String.class));
                 nickName.setText(dataSnapshot.child("nickname").getValue(String.class));
                 recipeExplain.setText(dataSnapshot.child("explain").getValue(String.class));
-                numPerson.setText(dataSnapshot.child("numPerson").getValue(Integer.class) + "인분");
 
                 Glide.with(getApplicationContext())
                         .load(dataSnapshot.child("image").getValue(String.class))
@@ -96,7 +100,8 @@ public class RecipeClickActivity extends AppCompatActivity {
                         IngredientData data = new IngredientData();
                         data.setEditable(false);
                         data.setIngredientName(step.child("ingredient").getValue(String.class));
-                        data.setIngredientWeight(step.child("weight").getValue(Integer.class) + "g");
+                        data.setIngredientWeight(step.child("weight").getValue(Integer.class));
+
                         ingredientAdapter.addItem(data);
                         recipeStepData.addIngredientArrayList(data);
                     }
@@ -116,5 +121,50 @@ public class RecipeClickActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+
+        switch (i) {
+            case R.id.addButton:
+                changeIngredientWeight(1);
+                numPerson.setText(++numPerson_t + "인분");
+                break;
+
+            case R.id.subButton:
+                if (numPerson_t == 1)
+                    Toast.makeText(getApplicationContext(), "인원을 감소할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                else {
+                    changeIngredientWeight(-1);
+                    numPerson.setText(--numPerson_t + "인분");
+                }
+                break;
+
+            case R.id.resetButton:
+                    changeIngredientWeight(1 - numPerson_t);
+                    numPerson.setText("1인분");
+                    numPerson_t = 1;
+                break;
+
+            case R.id.changeButton:
+                break;
+
+            case R.id.playButton:
+                break;
+        }
+    }
+
+    public void changeIngredientWeight(int i) {
+        for (IngredientData data : ingredientAdapter.getListData()) {
+            data.setIngredientWeight(data.getIngredientWeight() + i * data.getIngredientWeight() / numPerson_t);
+        }
+
+//        for (RecipeStepData data : recipeOrderAdapter.getListData()) {
+//            for (IngredientData idata : data.getIngredientArrayList()) {
+//            }
+//        }
+        ingredientAdapter.notifyDataSetChanged();
     }
 }

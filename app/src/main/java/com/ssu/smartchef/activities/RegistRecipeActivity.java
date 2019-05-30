@@ -7,13 +7,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,8 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,9 +30,7 @@ import com.ssu.smartchef.data.RecipeData;
 import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -135,7 +129,7 @@ public class RegistRecipeActivity extends BaseActivity {
         recyclerView = findViewById(R.id.regist_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RegistAdapter(getApplicationContext());
+        adapter = new RegistAdapter(getApplicationContext(),this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -147,6 +141,15 @@ public class RegistRecipeActivity extends BaseActivity {
             try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
                 image.setImageBitmap(bitmap);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            Toast.makeText(getApplicationContext(), data.getStringExtra("test") +"", Toast.LENGTH_SHORT).show();
+            filePath = data.getData();
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
             }catch (IOException e){
                 e.printStackTrace();
             }
