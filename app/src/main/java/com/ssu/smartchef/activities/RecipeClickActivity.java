@@ -96,7 +96,7 @@ public class RecipeClickActivity extends AppCompatActivity {
                         IngredientData data = new IngredientData();
                         data.setEditable(false);
                         data.setIngredientName(step.child("ingredient").getValue(String.class));
-                        data.setIngredientWeight(step.child("weight").getValue(Integer.class) + "g");
+                        data.setIngredientWeight(step.child("weight").getValue(Integer.class));
                         ingredientAdapter.addItem(data);
                         recipeStepData.addIngredientArrayList(data);
                     }

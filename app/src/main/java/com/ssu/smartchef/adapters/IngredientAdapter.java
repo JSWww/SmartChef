@@ -55,7 +55,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setIngredientWeight(s.toString());
+                listData.get(i).setIngredientWeight(Integer.parseInt(s.toString()));
             }
 
             @Override

@@ -1,10 +1,18 @@
 package com.ssu.smartchef.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,6 +42,7 @@ import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.mainAdapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +54,9 @@ public class MainActivity extends BaseActivity
     private TextView nickNameTextView;
     private Button loginButton;
     private FirebaseAuth mAuth;
+    Intent i;
+    SpeechRecognizer mRecognizer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +79,34 @@ public class MainActivity extends BaseActivity
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.micButton :
-                        Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+                            //권한을 허용하지 않는 경우
+                        } else {
+                            //권한을 허용한 경우
+                            try {
+                                mRecognizer.startListening(i);
+                            } catch(SecurityException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         break ;
-                    case R.id.regist_save:
+                    case R.id.cameraButton:
                         Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
                         break ;
                 }
             }
         };
+        //음성인식 코드
+        i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getApplicationContext().getPackageName());
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+        mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+        mRecognizer.setRecognitionListener(listener);
+
 
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        ImageView cameraButton = (ImageView)findViewById(R.id.regist_save);
+        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -125,13 +154,62 @@ public class MainActivity extends BaseActivity
         getData();
 
     }
+    private RecognitionListener listener = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+            System.out.println("onReadyForSpeech.........................");
+        }
+        @Override
+        public void onBeginningOfSpeech() {
+            Toast.makeText(getApplicationContext(), "지금부터 말을 해주세요!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+            System.out.println("onRmsChanged.........................");
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+            System.out.println("onBufferReceived.........................");
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            System.out.println("onEndOfSpeech.........................");
+        }
+
+        @Override
+        public void onError(int error) {
+            Toast.makeText(getApplicationContext(), "천천히 다시 말해주세요.", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+            System.out.println("onPartialResults.........................");
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+            System.out.println("onEvent.........................");
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            String key= "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = results.getStringArrayList(key);
+            String[] rs = new String[mResult.size()];
+            mResult.toArray(rs);
+            Toast.makeText(getApplicationContext(), rs[0], Toast.LENGTH_SHORT).show();
+            mRecognizer.startListening(i); //음성인식이 계속 되는 구문이니 필요에 맞게 쓰시길 바람
+        }
+    };
 
     private void init() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         adapter = new mainAdapter();
         recyclerView.setAdapter(adapter);
     }
@@ -146,7 +224,6 @@ public class MainActivity extends BaseActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot recipeSnapshot : dataSnapshot.getChildren()) {
                     MainViewData data = new MainViewData();
-
                     data.setTitle(recipeSnapshot.child("title").getValue(String.class));
                     data.setWriter(recipeSnapshot.child("nickname").getValue(String.class));
                     data.setIamgeURL(recipeSnapshot.child("image").getValue(String.class));

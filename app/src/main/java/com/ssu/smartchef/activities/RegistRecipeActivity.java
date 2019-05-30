@@ -7,13 +7,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,8 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,9 +30,7 @@ import com.ssu.smartchef.data.RecipeData;
 import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.adapters.RegistAdapter;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +44,7 @@ public class RegistRecipeActivity extends BaseActivity {
     EditText title,explain,numPerson,time;
     ImageView image;
     String image_url;
-    private Uri filePath;
+    ArrayList<Uri> filePathList = new ArrayList<>();
     RecipeData data;
     String filename;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -127,7 +121,15 @@ public class RegistRecipeActivity extends BaseActivity {
                 data.setCategory4(spinner4.getSelectedItemPosition());
                 data.setNickName(nickName);
                 data.setStepList(adapter.listData);
-                uploadFile();
+                for(int i = 0 ; i < filePathList.size() ; i++){
+                    if(i == filePathList.size() - 1){
+                        uploadFile(filePathList.get(i),i,true);
+                    }
+                    else{
+                        uploadFile(filePathList.get(i),i,false);
+                    }
+
+                }
             }
         });
     }
@@ -135,7 +137,7 @@ public class RegistRecipeActivity extends BaseActivity {
         recyclerView = findViewById(R.id.regist_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RegistAdapter(getApplicationContext());
+        adapter = new RegistAdapter(getApplicationContext(),this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -143,16 +145,25 @@ public class RegistRecipeActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 0 && resultCode == RESULT_OK){
-            filePath = data.getData();
+            filePathList.add(0,data.getData());
             try{
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),data.getData());
                 image.setImageBitmap(bitmap);
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            filePathList.add(data.getData());
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),data.getData());
+                adapter.test.setImageBitmap(bitmap);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
-    private void uploadFile() {
+    private void uploadFile(Uri filePath,final int index,final boolean isLast) {
         //업로드할 파일이 있으면 수행
         if (filePath != null) {
             //업로드 진행 Dialog 보이기
@@ -165,7 +176,7 @@ public class RegistRecipeActivity extends BaseActivity {
             //Unique한 파일명을 만들자.
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
             Date now = new Date();
-            filename = formatter.format(now) + ".png";
+            filename = formatter.format(now) + index + ".png";
             //storage 주소와 폴더 파일명을 지정해 준다.
             storageRef = storage.getReferenceFromUrl("gs://smartchef-dc7ae.appspot.com").child(filename);
             //올라가거라...
@@ -180,8 +191,15 @@ public class RegistRecipeActivity extends BaseActivity {
                             taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    data.setImage(uri.toString());
-                                    data.SaveDB();
+                                    if(index == 0){
+                                        data.setImage(uri.toString());
+                                    }
+                                    else{
+                                        data.stepList.get(index-1).setStepImageURL(uri.toString());
+                                    }
+                                    if(isLast == true){
+                                        data.SaveDB();
+                                    }
                                 }
                             });
                         }
