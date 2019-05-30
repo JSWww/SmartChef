@@ -24,14 +24,13 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHolder> {
     public ArrayList<RecipeStepData> listData = new ArrayList<>();
     private Context mContext;
     private Activity mActivity;
-
-
-
-
+    public ImageView test;
 
     public RegistAdapter(Context mContext,Activity mActivity) {
         this.mContext = mContext;
@@ -97,7 +96,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private EditText title, explain;
-        private ImageView food;
+        public ImageView food;
         public RecyclerView items;
         public ImageView add_btn;
         IngredientAdapter itemListDataAdapter = new IngredientAdapter();
@@ -128,9 +127,10 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             }
             else if(v.getId() == R.id.regist_step_food){
+                test = food;
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.putExtra("test", "test");
+
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 mActivity.startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요"),1);
             }

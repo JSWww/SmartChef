@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ItemViewHolder> {
 
-    private ArrayList<IngredientData> listData = new ArrayList<>();
+    public ArrayList<IngredientData> listData = new ArrayList<>();
 
     @NonNull
     @Override

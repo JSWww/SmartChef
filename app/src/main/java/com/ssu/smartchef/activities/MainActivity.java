@@ -1,5 +1,7 @@
 package com.ssu.smartchef.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.mainAdapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +49,7 @@ public class MainActivity extends BaseActivity
     private TextView nickNameTextView;
     private Button loginButton;
     private FirebaseAuth mAuth;
-
+    public ArrayList<MainViewData> fulllist = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,7 @@ public class MainActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        Button.OnClickListener onClickListener= new Button.OnClickListener(){
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -81,7 +85,6 @@ public class MainActivity extends BaseActivity
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         Intent intent = getIntent();
         nickName = intent.getStringExtra("nickName");
 
@@ -93,7 +96,7 @@ public class MainActivity extends BaseActivity
             nickNameTextView.setText(nickName);
             loginButton.setText("logout");
         }
-        
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +115,7 @@ public class MainActivity extends BaseActivity
                     editor.putString("nickName", null);
                     editor.putString("email", null);
                     editor.commit();
-                }
-                else {
+                } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra("isSkipPressed", true);
                     startActivity(intent);
@@ -123,7 +125,6 @@ public class MainActivity extends BaseActivity
         });
         init();
         getData();
-
     }
 
     private void init() {
@@ -132,7 +133,7 @@ public class MainActivity extends BaseActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new mainAdapter();
+        adapter = new mainAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
     }
 
@@ -151,6 +152,7 @@ public class MainActivity extends BaseActivity
                     data.setWriter(recipeSnapshot.child("nickname").getValue(String.class));
                     data.setIamgeURL(recipeSnapshot.child("image").getValue(String.class));
                     adapter.addItem(data);
+                    fulllist.add(data);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -174,9 +176,47 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) findViewById(R.id.searchfood);
+        searchView.onActionViewExpanded(); //바로 검색 할 수 있도록
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+            searchView.setQueryHint("요리명 검색");
+            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.setFilter(filter(fulllist, newText));
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+
         return true;
+    }
+
+    private ArrayList<MainViewData> filter(ArrayList<MainViewData> noticeList, String query){
+        if(query.length() == 0){
+            return fulllist;
+        }
+        query = query.toLowerCase();
+        final ArrayList<MainViewData>  filteredNoticeList = new ArrayList<>();
+        if (query != null && !query.equals("")) {
+            for (MainViewData model : noticeList) {
+                final String title = model.getTitle().toLowerCase();
+                if (title.contains(query)) {
+                    filteredNoticeList.add(model);
+                }
+            }
+        }
+        return filteredNoticeList;
     }
 
     @Override

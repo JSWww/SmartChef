@@ -121,7 +121,7 @@
                     android:background="@color/colorPrimaryDark"
                     android:ems="10"
                     android:hint="예)0인분"
-                    android:inputType="text" />
+                    android:inputType="number" />
             </TableRow>
 
             <TableRow
@@ -141,7 +141,7 @@
                     android:background="@color/colorPrimaryDark"
                     android:ems="10"
                     android:hint="예)0분"
-                    android:inputType="text" />
+                    android:inputType="number" />
             </TableRow>
         </TableLayout>
 
