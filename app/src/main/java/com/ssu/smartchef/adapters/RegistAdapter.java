@@ -20,6 +20,9 @@ import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.data.RecipeStepData;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,7 +47,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
-        listData.get(i).setIngredientArrayList(itemViewHolder.itemListDataAdapter.listData);
+        listData.get(i).setIngredientArrayList(itemViewHolder.itemListDataAdapter.getListData());
         itemViewHolder.title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,7 +93,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     }
 
 
-    class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private EditText title, explain;
         public ImageView food;
@@ -127,6 +130,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
                 test = food;
                 Intent intent = new Intent();
                 intent.setType("image/*");
+
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 mActivity.startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요"),1);
             }

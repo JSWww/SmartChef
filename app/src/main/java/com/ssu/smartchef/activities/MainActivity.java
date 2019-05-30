@@ -71,17 +71,17 @@ public class MainActivity extends BaseActivity
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.micButton:
-                        Toast.makeText(getApplicationContext(), "mic", Toast.LENGTH_SHORT).show();
-                        break;
+                        Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
+                        break ;
                     case R.id.cameraButton:
-                        Toast.makeText(getApplicationContext(), "camera", Toast.LENGTH_SHORT).show();
-                        break;
+                        Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
+                        break ;
                 }
             }
         };
 
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        ImageView cameraButton = (ImageView) findViewById(R.id.cameraButton);
+        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
