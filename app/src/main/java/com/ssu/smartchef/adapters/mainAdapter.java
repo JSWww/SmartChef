@@ -18,8 +18,12 @@ import com.ssu.smartchef.R;
 import java.util.ArrayList;
 
 public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder> {
-    private ArrayList<MainViewData> listData = new ArrayList<>();
-
+    public ArrayList<MainViewData> listData = new ArrayList<>();
+    Context mContext;
+    public mainAdapter(){ }
+    public mainAdapter(Context context){
+        mContext = context;
+    }
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -40,6 +44,11 @@ public class mainAdapter extends RecyclerView.Adapter<mainAdapter.ItemViewHolder
     public void addItem(MainViewData data) {
         // 외부에서 item을 추가시킬 함수입니다.
         listData.add(data);
+    }
+    public void setFilter(ArrayList<MainViewData> items) {
+        listData.clear();
+        listData.addAll(items);
+        notifyDataSetChanged();
     }
 
 

@@ -20,7 +20,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <SearchView
-                android:id="@+id/searchtext"
+                android:id="@+id/searchfood"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl" />

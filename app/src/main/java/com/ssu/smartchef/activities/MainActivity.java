@@ -1,18 +1,12 @@
 package com.ssu.smartchef.activities;
 
-import android.Manifest;
-import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,10 +49,7 @@ public class MainActivity extends BaseActivity
     private TextView nickNameTextView;
     private Button loginButton;
     private FirebaseAuth mAuth;
-    Intent i;
-    SpeechRecognizer mRecognizer;
-
-
+    public ArrayList<MainViewData> fulllist = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,43 +66,25 @@ public class MainActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        Button.OnClickListener onClickListener= new Button.OnClickListener(){
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.micButton :
-                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-                            //권한을 허용하지 않는 경우
-                        } else {
-                            //권한을 허용한 경우
-                            try {
-                                mRecognizer.startListening(i);
-                            } catch(SecurityException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        break ;
+                    case R.id.micButton:
+                        Toast.makeText(getApplicationContext(), "mic", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.cameraButton:
-                        Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
-                        break ;
+                        Toast.makeText(getApplicationContext(), "camera", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         };
-        //음성인식 코드
-        i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getApplicationContext().getPackageName());
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
-        mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
-        mRecognizer.setRecognitionListener(listener);
-
 
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
+        ImageView cameraButton = (ImageView) findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
         cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         Intent intent = getIntent();
         nickName = intent.getStringExtra("nickName");
 
@@ -122,7 +96,7 @@ public class MainActivity extends BaseActivity
             nickNameTextView.setText(nickName);
             loginButton.setText("logout");
         }
-        
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,8 +115,7 @@ public class MainActivity extends BaseActivity
                     editor.putString("nickName", null);
                     editor.putString("email", null);
                     editor.commit();
-                }
-                else {
+                } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.putExtra("isSkipPressed", true);
                     startActivity(intent);
@@ -152,65 +125,15 @@ public class MainActivity extends BaseActivity
         });
         init();
         getData();
-
     }
-    private RecognitionListener listener = new RecognitionListener() {
-        @Override
-        public void onReadyForSpeech(Bundle params) {
-            System.out.println("onReadyForSpeech.........................");
-        }
-        @Override
-        public void onBeginningOfSpeech() {
-            Toast.makeText(getApplicationContext(), "지금부터 말을 해주세요!", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onRmsChanged(float rmsdB) {
-            System.out.println("onRmsChanged.........................");
-        }
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {
-            System.out.println("onBufferReceived.........................");
-        }
-
-        @Override
-        public void onEndOfSpeech() {
-            System.out.println("onEndOfSpeech.........................");
-        }
-
-        @Override
-        public void onError(int error) {
-            Toast.makeText(getApplicationContext(), "천천히 다시 말해주세요.", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {
-            System.out.println("onPartialResults.........................");
-        }
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {
-            System.out.println("onEvent.........................");
-        }
-
-        @Override
-        public void onResults(Bundle results) {
-            String key= "";
-            key = SpeechRecognizer.RESULTS_RECOGNITION;
-            ArrayList<String> mResult = results.getStringArrayList(key);
-            String[] rs = new String[mResult.size()];
-            mResult.toArray(rs);
-            Toast.makeText(getApplicationContext(), rs[0], Toast.LENGTH_SHORT).show();
-            mRecognizer.startListening(i); //음성인식이 계속 되는 구문이니 필요에 맞게 쓰시길 바람
-        }
-    };
 
     private void init() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new mainAdapter();
+
+        adapter = new mainAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
     }
 
@@ -224,10 +147,12 @@ public class MainActivity extends BaseActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot recipeSnapshot : dataSnapshot.getChildren()) {
                     MainViewData data = new MainViewData();
+
                     data.setTitle(recipeSnapshot.child("title").getValue(String.class));
                     data.setWriter(recipeSnapshot.child("nickname").getValue(String.class));
                     data.setIamgeURL(recipeSnapshot.child("image").getValue(String.class));
                     adapter.addItem(data);
+                    fulllist.add(data);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -251,9 +176,47 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) findViewById(R.id.searchfood);
+        searchView.onActionViewExpanded(); //바로 검색 할 수 있도록
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+            searchView.setQueryHint("요리명 검색");
+            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.setFilter(filter(fulllist, newText));
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+
         return true;
+    }
+
+    private ArrayList<MainViewData> filter(ArrayList<MainViewData> noticeList, String query){
+        if(query.length() == 0){
+            return fulllist;
+        }
+        query = query.toLowerCase();
+        final ArrayList<MainViewData>  filteredNoticeList = new ArrayList<>();
+        if (query != null && !query.equals("")) {
+            for (MainViewData model : noticeList) {
+                final String title = model.getTitle().toLowerCase();
+                if (title.contains(query)) {
+                    filteredNoticeList.add(model);
+                }
+            }
+        }
+        return filteredNoticeList;
     }
 
     @Override

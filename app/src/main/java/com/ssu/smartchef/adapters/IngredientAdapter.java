@@ -18,7 +18,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
     public ArrayList<IngredientData> listData = new ArrayList<>();
 
-
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -27,10 +26,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
-        itemViewHolder.ingredientText.setText(listData.get(i).getIngredientName());
-        itemViewHolder.ingredientWeight.setText(listData.get(i).getIngredientWeight());
+
         itemViewHolder.ingredientText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,7 +53,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setIngredientWeight(Integer.parseInt(s.toString()));
+                if (s.toString().contains("g"))
+                    listData.get(i).setIngredientWeight(Integer.parseInt(s.subSequence(0, s.length() - 1).toString()));
+                else
+                    listData.get(i).setIngredientWeight(Integer.parseInt(s.toString()));
             }
 
             @Override
@@ -88,13 +89,22 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         }
 
         void onBind(IngredientData data) {
-            ingredientText.setText(data.getIngredientName());
-            ingredientWeight.setText(data.getIngredientWeight());
 
-            if (!data.isEditable()) {
+            if (data.isEditable()) {
+                ingredientText.setText(data.getIngredientName());
+                if (data.getIngredientWeight() != 0)
+                    ingredientWeight.setText(data.getIngredientWeight() + "");
+            }
+            else {
+                ingredientText.setText(data.getIngredientName());
+                ingredientWeight.setText(data.getIngredientWeight() + "g");
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
             }
         }
+    }
+
+    public ArrayList<IngredientData> getListData() {
+        return listData;
     }
 }
