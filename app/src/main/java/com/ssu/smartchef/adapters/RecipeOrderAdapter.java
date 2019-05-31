@@ -75,16 +75,18 @@ public class RecipeOrderAdapter extends RecyclerView.Adapter<RecipeOrderAdapter.
         }
 
         void onBind(RecipeStepData data) {
-            step.setText("STEP " + (getAdapterPosition() + 1));
-            stepTitle.setText(data.getStepTitle());
-            stepExplain.setText(data.getStepExplain());
+            if (ingredientAdapter.getItemCount() == 0) {
+                step.setText("STEP " + (getAdapterPosition() + 1));
+                stepTitle.setText(data.getStepTitle());
+                stepExplain.setText(data.getStepExplain());
 
-            Glide.with(itemView)
-                    .load(data.getStepImageURL())
-                    .into(stepImage);
+                Glide.with(itemView)
+                        .load(data.getStepImageURL())
+                        .into(stepImage);
 
-            for (IngredientData ingredientData : data.getIngredientArrayList())
-                ingredientAdapter.addItem(ingredientData);
+                for (IngredientData ingredientData : data.getIngredientArrayList())
+                    ingredientAdapter.addItem(ingredientData);
+            }
 
             ingredientAdapter.notifyDataSetChanged();
         }
