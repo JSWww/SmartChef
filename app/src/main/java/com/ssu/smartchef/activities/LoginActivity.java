@@ -40,9 +40,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static boolean isSkipPressed = false;
 
     private TextView skip;
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
 

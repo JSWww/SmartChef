@@ -1,5 +1,6 @@
 package com.ssu.smartchef.adapters;
 
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ItemViewHolder> {
 
     public ArrayList<IngredientData> listData = new ArrayList<>();
+    private int seletedPosition = -1;
 
     @NonNull
     @Override
@@ -26,11 +28,21 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_item, viewGroup, false);
         return new ItemViewHolder(view);
     }
+    public void setPos(int pos){
+        seletedPosition = pos;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
-
+        if(seletedPosition == i){
+            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+        }
+        else {
+            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
+            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
+        }
         itemViewHolder.ingredientText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,7 +106,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             if (data.isEditable()) {
                 ingredientText.setText(data.getIngredientName());
-                if (data.getIngredientWeight() != 0)
+                if (data.getIngredientWeight() < 1)
                     ingredientWeight.setText(data.getIngredientWeight() + "");
             }
             else {

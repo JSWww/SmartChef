@@ -1,8 +1,9 @@
 package com.ssu.smartchef.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RecipeStepData {
+public class RecipeStepData implements Serializable {
     ArrayList<IngredientData> ingredientArrayList;
 
     private String stepTitle;
