@@ -27,7 +27,7 @@ public class StepExplainActivity extends AppCompatActivity {
     ImageView stepImage;
     CircularProgressIndicator stepScale;
     ImageButton pre,next;
-    public ArrayList<RecipeStepData> stepList;
+    public ArrayList<RecipeStepData> stepList = new ArrayList<>();
     IngredientAdapter adapter = new IngredientAdapter();
     int index = 0;
     int ingredientIndex = 0;
@@ -36,6 +36,7 @@ public class StepExplainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_explain);
         Intent intent = getIntent();
+        stepList = getIntent().getParcelableArrayListExtra("list");
         stepList = (ArrayList<RecipeStepData>)intent.getSerializableExtra("list");
         stepNumber  = findViewById(R.id.runStepNumber);
         stepTitle = findViewById(R.id.runStepTitle);
@@ -45,6 +46,7 @@ public class StepExplainActivity extends AppCompatActivity {
         stepScale = findViewById(R.id.runStepScale);
         pre = findViewById(R.id.runStepBackButton);
         next = findViewById(R.id.runStepNextButton);
+        init();
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +58,6 @@ public class StepExplainActivity extends AppCompatActivity {
                 dataChange(index,false,ingredientIndex);
             }
         });
-        init();
         dataChange(0,false,0);
     }
     private void init() {
