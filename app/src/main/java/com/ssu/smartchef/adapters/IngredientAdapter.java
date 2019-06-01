@@ -68,9 +68,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().contains("g"))
-                    listData.get(i).setIngredientWeight(Integer.parseInt(s.subSequence(0, s.length() - 1).toString()));
+                    listData.get(i).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
                 else
-                    listData.get(i).setIngredientWeight(Integer.parseInt(s.toString()));
+                    listData.get(i).setIngredientWeight(Double.parseDouble(s.toString()));
             }
 
             @Override
@@ -106,12 +106,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             if (data.isEditable()) {
                 ingredientText.setText(data.getIngredientName());
-                if (data.getIngredientWeight() < 1)
-                    ingredientWeight.setText(data.getIngredientWeight() + "");
+
+                if (data.getIngredientWeight() != 0)
+                    ingredientWeight.setText((int)(data.getIngredientWeight()) + "");
             }
             else {
                 ingredientText.setText(data.getIngredientName());
-                ingredientWeight.setText(data.getIngredientWeight() + "g");
+                if (data.getIngredientWeight() == (long) data.getIngredientWeight())
+                    ingredientWeight.setText(String.format("%.0fg", data.getIngredientWeight()));
+                else
+                    ingredientWeight.setText(String.format("%.1fg", data.getIngredientWeight()));
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
             }
