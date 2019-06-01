@@ -38,5 +38,6 @@
     <string name="ok">확인</string>
 
     <string name="loading">Loading...</string>
+    <string name="title_activity_step_explain">StepExplainActivity</string>
 
 </resources>

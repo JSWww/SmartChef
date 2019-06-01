@@ -159,6 +159,10 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.playButton:
+                Intent intent = new Intent(getApplicationContext(), StepExplainActivity.class);
+                ArrayList<RecipeStepData > items = recipeOrderAdapter.getListData();
+                intent.putParcelableArrayListExtra("list", items);
+                startActivity(intent);
                 break;
         }
     }

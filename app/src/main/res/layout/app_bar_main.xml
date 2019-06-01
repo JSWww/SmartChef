@@ -23,7 +23,9 @@
                 android:id="@+id/searchfood"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layoutDirection="rtl" />
+                android:layoutDirection="rtl"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <ImageView
                 android:id="@+id/micButton"
