@@ -3,10 +3,11 @@ package com.ssu.smartchef.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RecipeStepData implements Parcelable {
-    ArrayList<IngredientData> ingredientArrayList;
+public class RecipeStepData implements Serializable {
+    ArrayList<IngredientData> ingredientArrayList = new ArrayList<>();
 
     private String stepTitle;
     private String stepExplain;
@@ -20,18 +21,6 @@ public class RecipeStepData implements Parcelable {
         this.stepExplain = in.readString();
         this.stepImageURL = in.readString();
     }
-
-    public static final Creator<RecipeStepData> CREATOR = new Creator<RecipeStepData>() {
-        @Override
-        public RecipeStepData createFromParcel(Parcel in) {
-            return new RecipeStepData(in);
-        }
-
-        @Override
-        public RecipeStepData[] newArray(int size) {
-            return new RecipeStepData[size];
-        }
-    };
 
     public String getStepTitle() {
         return stepTitle;
@@ -69,15 +58,4 @@ public class RecipeStepData implements Parcelable {
         this.ingredientArrayList.add(data);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.stepTitle);
-        dest.writeString(this.stepExplain);
-        dest.writeString(this.stepImageURL);
-    }
 }

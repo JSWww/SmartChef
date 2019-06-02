@@ -1,7 +1,8 @@
 package com.ssu.smartchef.data;
 
-public class IngredientData {
+import java.io.Serializable;
 
+public class IngredientData implements Serializable {
     private String ingredientName;
     private double ingredientWeight;
     private boolean isEditable = true;
