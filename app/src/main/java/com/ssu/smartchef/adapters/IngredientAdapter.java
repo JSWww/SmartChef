@@ -1,5 +1,6 @@
 package com.ssu.smartchef.adapters;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -36,12 +37,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
     public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
         if(seletedPosition == i){
-            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
-            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+//            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+//            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+            itemViewHolder.ingredientText.setTextColor(Color.BLUE);
+            itemViewHolder.ingredientWeight.setTextColor(Color.BLUE);
         }
         else {
-            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
-            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
+//            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
+//            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
+            itemViewHolder.ingredientText.setTextColor(Color.BLACK);
+            itemViewHolder.ingredientWeight.setTextColor(Color.BLACK);
         }
         itemViewHolder.ingredientText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -68,9 +73,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().contains("g"))
-                    listData.get(i).setIngredientWeight(Integer.parseInt(s.subSequence(0, s.length() - 1).toString()));
+                    listData.get(i).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
                 else
-                    listData.get(i).setIngredientWeight(Integer.parseInt(s.toString()));
+                    listData.get(i).setIngredientWeight(Double.parseDouble(s.toString()));
             }
 
             @Override
@@ -106,12 +111,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             if (data.isEditable()) {
                 ingredientText.setText(data.getIngredientName());
-                if (data.getIngredientWeight() < 1)
-                    ingredientWeight.setText(data.getIngredientWeight() + "");
+
+                if (data.getIngredientWeight() != 0)
+                    ingredientWeight.setText((int)(data.getIngredientWeight()) + "");
             }
             else {
                 ingredientText.setText(data.getIngredientName());
-                ingredientWeight.setText(data.getIngredientWeight() + "g");
+                if (data.getIngredientWeight() == (long) data.getIngredientWeight())
+                    ingredientWeight.setText(String.format("%.0fg", data.getIngredientWeight()));
+                else
+                    ingredientWeight.setText(String.format("%.1fg", data.getIngredientWeight()));
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
             }

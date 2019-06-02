@@ -22,7 +22,6 @@ import com.ssu.smartchef.adapters.IngredientAdapter;
 import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.RecipeOrderAdapter;
-import com.ssu.smartchef.data.MainViewData;
 import com.ssu.smartchef.data.RecipeStepData;
 
 import java.util.ArrayList;
@@ -42,7 +41,10 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private TextView recipeExplain;
     private TextView numPerson;
     private int numPerson_t;
+    private int numPerson_base;
     private ImageView recipeFood;
+
+    private ArrayList<Double> ingredientWeight_list;
 
 
     @Override
@@ -54,7 +56,6 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         nickName = findViewById(R.id.nickName);
         recipeExplain = findViewById(R.id.recipeExplain);
         numPerson = findViewById(R.id.numPerson);
-        numPerson_t = 1;
         recipeFood = findViewById(R.id.recipeFood);
 
         ingredientRecycler = findViewById(R.id.ingredientRecycler);
@@ -73,6 +74,8 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         recipeOrderAdapter = new RecipeOrderAdapter();
         recipeOrderRecycler.setAdapter(recipeOrderAdapter);
 
+        ingredientWeight_list = new ArrayList<>();
+
         Intent intent = getIntent();
         String recipeID = intent.getStringExtra("recipeID");
 
@@ -85,6 +88,9 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                 recipeName.setText(dataSnapshot.child("title").getValue(String.class));
                 nickName.setText(dataSnapshot.child("nickname").getValue(String.class));
                 recipeExplain.setText(dataSnapshot.child("explain").getValue(String.class));
+                numPerson.setText(dataSnapshot.child("numPerson").getValue(Integer.class) + "인분");
+                numPerson_t = dataSnapshot.child("numPerson").getValue(Integer.class);
+                numPerson_base = numPerson_t;
 
                 Glide.with(getApplicationContext())
                         .load(dataSnapshot.child("image").getValue(String.class))
@@ -100,9 +106,10 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                         IngredientData data = new IngredientData();
                         data.setEditable(false);
                         data.setIngredientName(step.child("ingredient").getValue(String.class));
-                        data.setIngredientWeight(step.child("weight").getValue(Integer.class));
+                        data.setIngredientWeight(step.child("weight").getValue(Double.class));
 
                         ingredientAdapter.addItem(data);
+                        ingredientWeight_list.add(data.getIngredientWeight());
                         recipeStepData.addIngredientArrayList(data);
                     }
 
@@ -129,23 +136,23 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
 
         switch (i) {
             case R.id.addButton:
-                changeIngredientWeight(1);
                 numPerson.setText(++numPerson_t + "인분");
+                changeIngredientWeight(1);
                 break;
 
             case R.id.subButton:
                 if (numPerson_t == 1)
                     Toast.makeText(getApplicationContext(), "인원을 감소할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 else {
-                    changeIngredientWeight(-1);
                     numPerson.setText(--numPerson_t + "인분");
+                    changeIngredientWeight(-1);
                 }
                 break;
 
             case R.id.resetButton:
-                    changeIngredientWeight(1 - numPerson_t);
-                    numPerson.setText("1인분");
-                    numPerson_t = 1;
+                numPerson.setText(numPerson_base + "인분");
+                numPerson_t = numPerson_base;
+                changeIngredientWeight(0);
                 break;
 
             case R.id.changeButton:
@@ -154,21 +161,28 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             case R.id.playButton:
                 Intent intent = new Intent(getApplicationContext(), StepExplainActivity.class);
                 ArrayList<RecipeStepData > items = recipeOrderAdapter.getListData();
-                intent.putParcelableArrayListExtra("list", items);
+                intent.putExtra("list", items);
                 startActivity(intent);
                 break;
         }
     }
 
     public void changeIngredientWeight(int i) {
+        int index = 0;
+
         for (IngredientData data : ingredientAdapter.getListData()) {
-            data.setIngredientWeight(data.getIngredientWeight() + i * data.getIngredientWeight() / numPerson_t);
+            if (i == 0) {
+                data.setIngredientWeight(ingredientWeight_list.get(index++));
+            }
+            else if (numPerson_t >= numPerson_base && numPerson_t % numPerson_base == 0) {
+                data.setIngredientWeight(ingredientWeight_list.get(index++) * (numPerson_t / numPerson_base));
+            }
+            else {
+                data.setIngredientWeight(data.getIngredientWeight() + i * data.getIngredientWeight() / (numPerson_t - i));
+            }
         }
 
-//        for (RecipeStepData data : recipeOrderAdapter.getListData()) {
-//            for (IngredientData idata : data.getIngredientArrayList()) {
-//            }
-//        }
         ingredientAdapter.notifyDataSetChanged();
+        recipeOrderAdapter.notifyDataSetChanged();
     }
 }

@@ -3,23 +3,17 @@ package com.ssu.smartchef.data;
 import java.io.Serializable;
 
 public class IngredientData implements Serializable {
-    public IngredientData() {}
-    public IngredientData(String Name, int Weight, boolean isEditable)
-    {
-        this.ingredientName = Name;
-        this.ingredientWeight = Weight;
-        this.isEditable = isEditable;
-    }
-
     private String ingredientName;
-    private int ingredientWeight;
+    private double ingredientWeight;
     private boolean isEditable = true;
+
+    public IngredientData() {}
 
     public String getIngredientName() {
         return ingredientName;
     }
 
-    public int getIngredientWeight() {
+    public double getIngredientWeight() {
         return ingredientWeight;
     }
 
@@ -27,7 +21,7 @@ public class IngredientData implements Serializable {
         this.ingredientName = ingredientName;
     }
 
-    public void setIngredientWeight(int ingredientWeight) {
+    public void setIngredientWeight(double ingredientWeight) {
         this.ingredientWeight = ingredientWeight;
     }
 
