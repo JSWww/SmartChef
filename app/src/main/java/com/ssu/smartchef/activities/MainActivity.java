@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity
     private TextView nickNameTextView;
     private Button loginButton;
     private FirebaseAuth mAuth;
+    SearchView searchView;
     public ArrayList<MainViewData> fulllist = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +166,13 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        searchView = (SearchView) findViewById(R.id.searchfood);
+        searchView.clearFocus();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -178,8 +186,9 @@ public class MainActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.main, menu);
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.searchfood);
+        searchView = (SearchView) findViewById(R.id.searchfood);
         searchView.onActionViewExpanded(); //바로 검색 할 수 있도록
+        searchView.clearFocus();
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
             searchView.setQueryHint("요리명 검색");
