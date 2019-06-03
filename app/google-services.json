@@ -52,6 +52,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "152651743995-i07iaugbphv5tilfgovph91074b0p72g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssu.smartchef",
+            "certificate_hash": "8f6218604f13edb42481767346f7ebedf62a2ab1"
+          }
+        },
+        {
           "client_id": "152651743995-g2aice77ti5lgj4cil7l3p283hu40ic4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -34,14 +34,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
     public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
         if(seletedPosition == i){
-//            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
-//            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
             itemViewHolder.ingredientText.setTextColor(Color.BLUE);
             itemViewHolder.ingredientWeight.setTextColor(Color.BLUE);
         }
         else {
-//            itemViewHolder.ingredientText.setPaintFlags(itemViewHolder.ingredientText.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
-//            itemViewHolder.ingredientWeight.setPaintFlags(itemViewHolder.ingredientWeight.getPaintFlags()&~ Paint.FAKE_BOLD_TEXT_FLAG);
             itemViewHolder.ingredientText.setTextColor(Color.BLACK);
             itemViewHolder.ingredientWeight.setTextColor(Color.BLACK);
         }

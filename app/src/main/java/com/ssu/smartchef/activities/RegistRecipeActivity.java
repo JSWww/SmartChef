@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -61,10 +62,10 @@ public class RegistRecipeActivity extends BaseActivity {
         regist_toolbar = findViewById(R.id.regist_toolbar);
         setSupportActionBar(regist_toolbar);
         save = findViewById(R.id.regist_save);
-        spinner1 = (Spinner)findViewById(R.id.spinner1);
-        spinner2 = (Spinner)findViewById(R.id.spinner2);
-        spinner3 = (Spinner)findViewById(R.id.spinner3);
-        spinner4 = (Spinner)findViewById(R.id.spinner4);
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner2 = (Spinner) findViewById(R.id.spinner2);
+        spinner3 = (Spinner) findViewById(R.id.spinner3);
+        spinner4 = (Spinner) findViewById(R.id.spinner4);
         list1 = new ArrayList<>();
         list2 = new ArrayList<>();
         list3 = new ArrayList<>();
@@ -73,10 +74,10 @@ public class RegistRecipeActivity extends BaseActivity {
         list2.add("::상황별");
         list3.add("::재료별");
         list4.add("::방법별");
-        ArrayAdapter spinner1Adapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list1);
-        ArrayAdapter spinner2Adapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list2);
-        ArrayAdapter spinner3Adapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list3);
-        ArrayAdapter spinner4Adapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list4);
+        ArrayAdapter spinner1Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
+        ArrayAdapter spinner2Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
+        ArrayAdapter spinner3Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);
+        ArrayAdapter spinner4Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list4);
         spinner1.setAdapter(spinner1Adapter);
         spinner2.setAdapter(spinner2Adapter);
         spinner3.setAdapter(spinner3Adapter);
@@ -93,7 +94,7 @@ public class RegistRecipeActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요"),0);
+                startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요"), 0);
             }
         });
         ImageView add_step = findViewById(R.id.add_step_btn);
@@ -102,7 +103,7 @@ public class RegistRecipeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
-                layoutParams.height = layoutParams.height*2;
+                layoutParams.height = layoutParams.height * 2;
                 adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
                 adapter.notifyDataSetChanged();
@@ -121,17 +122,34 @@ public class RegistRecipeActivity extends BaseActivity {
                 data.setCategory4(spinner4.getSelectedItemPosition());
                 data.setNickName(nickName);
                 data.setStepList(adapter.listData);
-                for(int i = 0 ; i < filePathList.size() ; i++){
-                    if(i == filePathList.size() - 1){
-                        uploadFile(filePathList.get(i),i,true);
-                    }
-                    else{
-                        uploadFile(filePathList.get(i),i,false);
+                for (int i = 0; i < filePathList.size(); i++) {
+                    if (i == filePathList.size() - 1) {
+                        uploadFile(filePathList.get(i), i, true);
+                    } else {
+                        uploadFile(filePathList.get(i), i, false);
                     }
 
                 }
+                Intent intent = new Intent(RegistRecipeActivity.this, SignUpActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                final int position = viewHolder.getAdapterPosition();
+                adapter.listData.remove(position);
+                recyclerView.getAdapter().notifyItemRemoved(position);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
     private void init() {
         recyclerView = findViewById(R.id.regist_recyclerView);
