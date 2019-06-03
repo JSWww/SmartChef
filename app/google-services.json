@@ -52,6 +52,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "152651743995-g2aice77ti5lgj4cil7l3p283hu40ic4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssu.smartchef",
+            "certificate_hash": "ff141b23f354f2af3a31f9f8928cfa5ede300e49"
+          }
+        },
+        {
+          "client_id": "152651743995-ofp923f1k36u0m73tb2089qf9rcbc1v8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssu.smartchef",
+            "certificate_hash": "11a98b73f0f3409769b1cfd526870c7b0298487e"
+          }
+        },
+        {
           "client_id": "152651743995-8nunin5sj44epokssesr9m1qs6prs1il.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
