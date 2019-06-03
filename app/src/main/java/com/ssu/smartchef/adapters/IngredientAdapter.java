@@ -52,7 +52,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setIngredientName(s.toString());
+                if (listData.get(i).isEditable())
+                    listData.get(i).setIngredientName(s.toString());
             }
 
             @Override
@@ -68,10 +69,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().contains("g"))
-                    listData.get(i).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
-                else
-                    listData.get(i).setIngredientWeight(Double.parseDouble(s.toString()));
+                if (listData.get(i).isEditable()) {
+                    if (s.toString().contains("g"))
+                        listData.get(i).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
+                    else
+                        listData.get(i).setIngredientWeight(Double.parseDouble(s.toString()));
+                }
             }
 
             @Override
