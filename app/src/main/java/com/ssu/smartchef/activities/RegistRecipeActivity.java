@@ -130,9 +130,6 @@ public class RegistRecipeActivity extends BaseActivity {
                     }
 
                 }
-                Intent intent = new Intent(RegistRecipeActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -145,7 +142,6 @@ public class RegistRecipeActivity extends BaseActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();
-                adapter.listData.remove(position);
                 recyclerView.getAdapter().notifyItemRemoved(position);
             }
         });
