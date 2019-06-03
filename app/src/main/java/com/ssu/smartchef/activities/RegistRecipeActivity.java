@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +27,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ssu.smartchef.R;
+import com.ssu.smartchef.adapters.RegistAdapter;
 import com.ssu.smartchef.data.RecipeData;
 import com.ssu.smartchef.data.RecipeStepData;
-import com.ssu.smartchef.adapters.RegistAdapter;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -122,6 +122,7 @@ public class RegistRecipeActivity extends BaseActivity {
                 data.setCategory4(spinner4.getSelectedItemPosition());
                 data.setNickName(nickName);
                 data.setStepList(adapter.listData);
+
                 for (int i = 0; i < filePathList.size(); i++) {
                     if (i == filePathList.size() - 1) {
                         uploadFile(filePathList.get(i), i, true);
@@ -130,13 +131,10 @@ public class RegistRecipeActivity extends BaseActivity {
                     }
 
                 }
-                Intent intent = new Intent(RegistRecipeActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -145,8 +143,9 @@ public class RegistRecipeActivity extends BaseActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();
+                adapter.listData.get(position).getIngredientArrayList().clear();
                 adapter.listData.remove(position);
-                recyclerView.getAdapter().notifyItemRemoved(position);
+                adapter.notifyItemRemoved(position);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -217,6 +216,10 @@ public class RegistRecipeActivity extends BaseActivity {
                                     }
                                     if(isLast == true){
                                         data.SaveDB();
+
+                                        Intent intent = new Intent(RegistRecipeActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 }
                             });

@@ -3,10 +3,10 @@ package com.ssu.smartchef.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,11 +20,6 @@ import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.data.RecipeStepData;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHolder> {
     public ArrayList<RecipeStepData> listData = new ArrayList<>();
@@ -115,6 +110,22 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         void onBind(RecipeStepData data) {
             title.setText(data.getStepTitle());
             explain.setText(data.getStepExplain());
+            itemListDataAdapter.notifyDataSetChanged();
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    final int position = viewHolder.getAdapterPosition();
+                    itemListDataAdapter.listData.remove(position);
+                    itemListDataAdapter.notifyItemRemoved(position);
+                }
+            });
+            itemTouchHelper.attachToRecyclerView(items);
         }
 
         @Override
