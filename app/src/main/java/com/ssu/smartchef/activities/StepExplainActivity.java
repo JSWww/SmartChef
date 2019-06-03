@@ -108,7 +108,7 @@ public class StepExplainActivity extends AppCompatActivity {
         stepTitle.setText(stepList.get(index).getStepTitle());
         stepExplain.setText(stepList.get(index).getStepExplain());
         adapter.listData = stepList.get(index).getIngredientArrayList();
-        if(index == 0 && ingredientIndex == 0 && isScale == true){
+        if(index == 0 && ingredientIndex == 0 && isScale == false){
             pre.setVisibility(View.INVISIBLE);
         }
         else{

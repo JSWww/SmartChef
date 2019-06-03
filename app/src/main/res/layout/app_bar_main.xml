@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
                 android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="true"/>
 
             <ImageView
                 android:id="@+id/micButton"
