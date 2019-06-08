@@ -126,8 +126,6 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         }
 
         void onBind(RecipeStepData data) {
-            ItemTouchHelper itemTouchHelper =  new ItemTouchHelper(simpleItemTouchCallback);
-            itemTouchHelper.attachToRecyclerView(items);
             title.setText(data.getStepTitle());
             explain.setText(data.getStepExplain());
             itemListDataAdapter.notifyDataSetChanged();

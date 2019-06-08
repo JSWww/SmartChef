@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.data.IngredientData;
@@ -96,16 +98,18 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         listData.add(data);
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private EditText ingredientText;
         private EditText ingredientWeight;
+        private ImageButton deleteButton;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ingredientText = itemView.findViewById(R.id.regist_ingredient_name);
             ingredientWeight = itemView.findViewById(R.id.regist_ingredient_weight);
+            deleteButton = itemView.findViewById(R.id.ingredientDeleteButton);
         }
 
         void onBind(IngredientData data) {
@@ -124,7 +128,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
                     ingredientWeight.setText(String.format("%.1fg", data.getIngredientWeight()));
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
+                deleteButton.setOnClickListener(this);
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(itemView.getContext(),this.getLayoutPosition()+"",Toast.LENGTH_SHORT).show();
         }
     }
 
