@@ -28,4 +28,11 @@
             android:inputType="number"
             android:textColor="@android:color/black" />
 
+        <ImageButton
+            android:id="@+id/ingredientDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/presence_busy" />
+
+
 </LinearLayout>

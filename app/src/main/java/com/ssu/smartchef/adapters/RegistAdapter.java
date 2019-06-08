@@ -95,6 +95,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         public RecyclerView items;
         public ImageView add_btn;
         IngredientAdapter itemListDataAdapter = new IngredientAdapter();
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -105,6 +106,23 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
             add_btn = itemView.findViewById(R.id.add_ingredient_btn);
             add_btn.setOnClickListener(this);
             food.setOnClickListener(this);
+            simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return true;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    // 삭제되는 아이템의 포지션을 가져온다
+                    final int position = viewHolder.getAdapterPosition();
+                    // 데이터의 해당 포지션을 삭제한다
+                    itemListDataAdapter.listData.remove(position);
+                    // 아답타에게 알린다
+                    itemListDataAdapter.notifyItemRemoved(position);
+                }
+            };
+
         }
 
         void onBind(RecipeStepData data) {
@@ -146,5 +164,6 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
                 mActivity.startActivityForResult(Intent.createChooser(intent,"이미지를 선택하세요"),1);
             }
         }
+
     }
 }
