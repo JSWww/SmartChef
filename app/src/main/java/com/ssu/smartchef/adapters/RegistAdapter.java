@@ -43,6 +43,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.onBind(listData.get(i));
         listData.get(i).setIngredientArrayList(itemViewHolder.itemListDataAdapter.getListData());
+
         itemViewHolder.title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,7 +88,6 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         listData.add(data);
     }
 
-
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private EditText title, explain;
@@ -120,6 +120,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
                     final int position = viewHolder.getAdapterPosition();
                     itemListDataAdapter.listData.remove(position);
                     itemListDataAdapter.notifyItemRemoved(position);
