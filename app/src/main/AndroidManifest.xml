@@ -19,8 +19,10 @@
         <activity android:name=".activities.ManualScaleActivity" />
         <activity
             android:name=".activities.RegistRecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.RecipeClickActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".activities.RecipeClickActivity"
+                        android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".activities.EmailLoginActivity"
             android:label="SmartChef"

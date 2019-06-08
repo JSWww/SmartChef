@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -95,7 +94,6 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         public RecyclerView items;
         public ImageView add_btn;
         IngredientAdapter itemListDataAdapter = new IngredientAdapter();
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -106,55 +104,22 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
             add_btn = itemView.findViewById(R.id.add_ingredient_btn);
             add_btn.setOnClickListener(this);
             food.setOnClickListener(this);
-            simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return true;
-                }
-
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    // 삭제되는 아이템의 포지션을 가져온다
-                    final int position = viewHolder.getAdapterPosition();
-                    // 데이터의 해당 포지션을 삭제한다
-                    itemListDataAdapter.listData.remove(position);
-                    // 아답타에게 알린다
-                    itemListDataAdapter.notifyItemRemoved(position);
-                }
-            };
-
         }
 
         void onBind(RecipeStepData data) {
             title.setText(data.getStepTitle());
             explain.setText(data.getStepExplain());
             itemListDataAdapter.notifyDataSetChanged();
-
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                    return false;
-                }
-
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-                    final int position = viewHolder.getAdapterPosition();
-                    itemListDataAdapter.listData.remove(position);
-                    itemListDataAdapter.notifyItemRemoved(position);
-                }
-            });
-            itemTouchHelper.attachToRecyclerView(items);
         }
 
         @Override
         public void onClick(View v) {
             if(v.getId() == R.id.add_ingredient_btn){
+                items.setAdapter(itemListDataAdapter);
                 itemListDataAdapter.addItem(new IngredientData());
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(v.getContext());
-                items.setAdapter(itemListDataAdapter);
                 items.setLayoutManager(linearLayoutManager);
-
+                itemListDataAdapter.notifyDataSetChanged();
             }
             else if(v.getId() == R.id.regist_step_food){
                 test = food;
