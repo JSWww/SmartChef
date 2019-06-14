@@ -1,25 +1,24 @@
 package com.ssu.smartchef.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ssu.smartchef.R;
@@ -27,13 +26,8 @@ import com.ssu.smartchef.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,20 +35,33 @@ public class ManualScaleActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 1001;
     private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothDevice mdevice;
-    private BluetoothSocket mSocket;
-    private InputStream mInputStream;
-    private OutputStream mOutputStream;
-    private byte[] readBuffer;
-    private Thread mWorkerThread;
-    private int readBufferPositon;
-    private byte mDelimiter = 10;
+    private BluetoothDevice mBluetoothDevice;
+    private ConnectedTask mConnectedTask = null;
+    private static final String TAG = "BluetoothClient";
+    private String DEVICE_NAME = "jsw-pc";
+
+    private EditText editText2;
+    private Button button;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_scale);
 
+        button = findViewById(R.id.button);
+        editText = findViewById(R.id.editText);
+        editText2 = findViewById(R.id.editText2);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sendMessage = editText.getText().toString();
+                if (sendMessage.length() > 0) {
+                    sendMessage(sendMessage);
+                }
+            }
+        });
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -87,43 +94,50 @@ public class ManualScaleActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_ENABLE_BT);
         }
         else {
-            searchDevice();
+            showPairedDevices();
         }
     }
 
     //블루투스 상태변화 BroadcastReceiver
     BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
-            //BluetoothAdapter.EXTRA_STATE : 블루투스의 현재상태 변화
+            // TODO: This method is called when the BroadcastReceiver is receiving
+            // an Intent broadcast.
+
             int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
 
             //블루투스 활성화
-            if(state == BluetoothAdapter.STATE_ON){
-                Log.d("abc","블루투스 활성화");
+            if (state == BluetoothAdapter.STATE_ON) {
+                Log.d("abc", "블루투스 활성화");
             }
             //블루투스 활성화 중
-            else if(state == BluetoothAdapter.STATE_TURNING_ON){
-                Log.d("abc","블루투스 활성화 중...");
+            else if (state == BluetoothAdapter.STATE_TURNING_ON) {
+                Log.d("abc", "블루투스 활성화 중...");
             }
             //블루투스 비활성화
-            else if(state == BluetoothAdapter.STATE_OFF){
-                Log.d("abc","블루투스 비활성화");
+            else if (state == BluetoothAdapter.STATE_OFF) {
+                Log.d("abc", "블루투스 비활성화");
             }
             //블루투스 비활성화 중
-            else if(state == BluetoothAdapter.STATE_TURNING_OFF){
-                Log.d("abc","블루투스 비활성화 중...");
+            else if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                Log.d("abc", "블루투스 비활성화 중...");
             }
         }
     };
 
     //블루투스 검색결과 BroadcastReceiver
     BroadcastReceiver mBluetoothSearchReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
+            // TODO: This method is called when the BroadcastReceiver is receiving
+            // an Intent broadcast.
+
             String action = intent.getAction();
 
-            switch(action){
+            switch (action) {
                 //블루투스 디바이스 검색 시작
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                     Toast.makeText(getApplicationContext(), "블루투스 검색 시작", Toast.LENGTH_SHORT).show();
@@ -133,20 +147,21 @@ public class ManualScaleActivity extends AppCompatActivity {
                     //검색한 블루투스 디바이스의 객체를 구한다
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if (device.getName() != null)
-                     if (device.getName().equals("jsw-pc")) {
-                          Toast.makeText(getApplicationContext(), "해당 디바이스 찾음", Toast.LENGTH_SHORT).show();
-                          mdevice = device;
-                          mBluetoothAdapter.cancelDiscovery();
-                      }
+                        if (device.getName().equals(DEVICE_NAME)) {
+                            Toast.makeText(getApplicationContext(), "해당 디바이스 찾음", Toast.LENGTH_SHORT).show();
+                            mBluetoothDevice = device;
+                            mBluetoothAdapter.cancelDiscovery();
+                        }
                     break;
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Toast.makeText(getApplicationContext(), "블루투스 검색 종료", Toast.LENGTH_SHORT).show();
 
-                    if (mdevice != null) {
+                    if (mBluetoothDevice != null) {
                         try {
-                            Method method = mdevice.getClass().getMethod("createBond", (Class[]) null);
-                            method.invoke(mdevice, (Object[]) null);
+                            Method method = mBluetoothDevice.getClass().getMethod("createBond", (Class[]) null);
+                            method.invoke(mBluetoothDevice, (Object[]) null);
+
                         } catch (NoSuchMethodException e) {
                             e.printStackTrace();
                         } catch (IllegalAccessException e) {
@@ -160,8 +175,10 @@ public class ManualScaleActivity extends AppCompatActivity {
                 //블루투스 디바이스 페어링 상태 변화
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     BluetoothDevice paired = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if(paired.getBondState()==BluetoothDevice.BOND_BONDED){
+                    if (paired.getBondState() == BluetoothDevice.BOND_BONDED) {
                         Log.d("abc", "paired " + paired.getName());
+                        ConnectTask task = new ConnectTask(paired);
+                        task.execute();
                     }
                     break;
             }
@@ -175,7 +192,7 @@ public class ManualScaleActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
-                searchDevice();
+                showPairedDevices();
             }
             else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getApplicationContext(), "failed",Toast.LENGTH_SHORT).show();
@@ -183,17 +200,18 @@ public class ManualScaleActivity extends AppCompatActivity {
         }
     }
 
-    public void searchDevice(){
+    public void showPairedDevices()
+    {
         Set<BluetoothDevice> pairedDevice = mBluetoothAdapter.getBondedDevices();
-
         boolean isPaired = false;
 
-        if(pairedDevice.size() > 0){
-            for(BluetoothDevice device : pairedDevice){
-                if (device.getName().equals("jsw-pc")) {
+        if(pairedDevice.size() > 0) {
+            for (BluetoothDevice device : pairedDevice) {
+                if (device.getName().equals(DEVICE_NAME)) {
                     Toast.makeText(getApplicationContext(), "이미 페어링 되어 있음", Toast.LENGTH_SHORT).show();
                     isPaired = true;
-                    connectToSelectedDevice(mdevice);
+                    ConnectTask task = new ConnectTask(device);
+                    task.execute();
                     break;
                 }
             }
@@ -205,133 +223,209 @@ public class ManualScaleActivity extends AppCompatActivity {
         }
     }
 
-    private void connectToSelectedDevice(final BluetoothDevice device) {
-        //블루투스 기기에 연결하는 과정이 시간이 걸리기 때문에 그냥 함수로 수행을 하면 GUI에 영향을 미친다
-        //따라서 연결 과정을 thread로 수행하고 thread의 수행 결과를 받아 다음 과정으로 넘어간다.
+    void sendMessage(String msg){
 
-        //handler는 thread에서 던지는 메세지를 보고 다음 동작을 수행시킨다.
-        final Handler mHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                if (msg.what == 1) // 연결 완료
-                {
-                    try {
-                        Toast.makeText(getApplicationContext(),"연결 성공", Toast.LENGTH_SHORT).show();
-                        //연결이 완료되면 소켓에서 outstream과 inputstream을 얻는다. 블루투스를 통해
-                        //데이터를 주고 받는 통로가 된다.
-                        mOutputStream = mSocket.getOutputStream();
-                        mInputStream = mSocket.getInputStream();
-                        // 데이터 수신 준비
-                        beginListenForData();
+        if ( mConnectedTask != null ) {
+            mConnectedTask.write(msg);
+            editText.setText("");
+            Log.d(TAG, "send message: " + msg);
+        }
+    }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {    //연결 실패
-                    Toast.makeText(getApplicationContext(),"Please check the device", Toast.LENGTH_SHORT).show();
+    private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
 
-                }
+        private BluetoothSocket mBluetoothSocket = null;
+        private BluetoothDevice mBluetoothDevice = null;
+
+        public ConnectTask(BluetoothDevice bluetoothDevice) {
+            mBluetoothDevice = bluetoothDevice;
+
+            //SPP
+            UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+            try {
+                mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+                Log.d( TAG, "create socket for ");
+
+            } catch (IOException e) {
+                Log.e( TAG, "socket create failed " + e.getMessage());
             }
-        };
 
-        //연결과정을 수행할 thread 생성
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                //선택된 기기의 이름을 갖는 bluetooth device의 object
-                UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            // Always cancel discovery because it will slow down a connection
+//            mBluetoothAdapter.cancelDiscovery();
+
+            // Make a connection to the BluetoothSocket
+            try {
+                // This is a blocking call and will only return on a
+                // successful connection or an exception
+                mBluetoothSocket.connect();
+            } catch (IOException e) {
+                // Close the socket
+                try {
+                    mBluetoothSocket.close();
+                } catch (IOException e2) {
+                    Log.e(TAG, "unable to close() " +
+                            " socket during connection failure", e2);
+                }
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSucess) {
+
+            if ( isSucess ) {
+                connected(mBluetoothSocket);
+            }
+            else{
+
+                Log.d( TAG,  "Unable to connect device");
+                Toast.makeText(getApplicationContext(), "Unable to connect device", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        public void connected( BluetoothSocket socket ) {
+            mConnectedTask = new ConnectedTask(socket);
+            mConnectedTask.execute();
+        }
+    }
+
+    private class ConnectedTask extends AsyncTask<Void, String, Boolean> {
+
+        private InputStream mInputStream = null;
+        private OutputStream mOutputStream = null;
+        private BluetoothSocket mBluetoothSocket = null;
+
+        ConnectedTask(BluetoothSocket socket){
+
+            mBluetoothSocket = socket;
+            try {
+                mInputStream = mBluetoothSocket.getInputStream();
+                mOutputStream = mBluetoothSocket.getOutputStream();
+            } catch (IOException e) {
+                Log.e(TAG, "socket not created", e );
+            }
+
+            Log.d( TAG, "connected to ");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            byte [] readBuffer = new byte[1024];
+            int readBufferPosition = 0;
+
+
+            while (true) {
+
+                if ( isCancelled() ) return false;
 
                 try {
-                    // 소켓 생성
-                    mSocket = device.createRfcommSocketToServiceRecord(uuid);
-                    // RFCOMM 채널을 통한 연결, socket에 connect하는데 시간이 걸린다. 따라서 ui에 영향을 주지 않기 위해서는
-                    // Thread로 연결 과정을 수행해야 한다.
-                    mSocket.connect();
-                    mHandler.sendEmptyMessage(1);
-                } catch (Exception e) {
-                    // 블루투스 연결 중 오류 발생
-                    mHandler.sendEmptyMessage(-1);
-                }
-            }
-        });
 
-        //연결 thread를 수행한다
-        thread.start();
-    }
+                    int bytesAvailable = mInputStream.available();
 
+                    if(bytesAvailable > 0) {
 
-    //블루투스 데이터 수신 Listener
-    protected void beginListenForData() {
-        final Handler handler = new Handler();
-        readBuffer = new byte[1024];  //  수신 버퍼
-        readBufferPositon = 0;        //   버퍼 내 수신 문자 저장 위치
+                        byte[] packetBytes = new byte[bytesAvailable];
 
-        // 문자열 수신 쓰레드
-        mWorkerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+                        mInputStream.read(packetBytes);
 
-                while (!Thread.currentThread().isInterrupted()) {
+                        for(int i=0;i<bytesAvailable;i++) {
 
-                    try {
+                            byte b = packetBytes[i];
+                            if(b == '\n')
+                            {
+                                byte[] encodedBytes = new byte[readBufferPosition];
+                                System.arraycopy(readBuffer, 0, encodedBytes, 0,
+                                        encodedBytes.length);
+                                String recvMessage = new String(encodedBytes, "UTF-8");
 
-                        int bytesAvailable = mInputStream.available();
-                        if (bytesAvailable > 0) { //데이터가 수신된 경우
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            mInputStream.read(packetBytes);
-                            for (int i = 0; i < bytesAvailable; i++) {
-                                byte b = packetBytes[i];
-                                if (b == mDelimiter) {
-                                    byte[] encodedBytes = new byte[readBufferPositon];
-                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
-                                    readBufferPositon = 0;
-                                    handler.post(new Runnable() {
-                                        public void run() {
-                                            //수신된 데이터는 data 변수에 string으로 저장!! 이 데이터를 이용하면 된다.
+                                readBufferPosition = 0;
 
-                                            char[] c_arr = data.toCharArray(); // char 배열로 변환
-                                            if (c_arr[0] == 'a') {
-                                                if (c_arr[1] == '1') {
-
-                                                    //a1이라는 데이터가 수신되었을 때
-
-                                                }
-                                                if (c_arr[1] == '2') {
-
-                                                    //a2라는 데이터가 수신 되었을 때
-                                                }
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    readBuffer[readBufferPositon++] = b;
-                                }
+                                Log.d(TAG, "recv message: " + recvMessage);
+                                publishProgress(recvMessage);
+                            }
+                            else
+                            {
+                                readBuffer[readBufferPosition++] = b;
                             }
                         }
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+                } catch (IOException e) {
+
+                    Log.e(TAG, "disconnected", e);
+                    return false;
                 }
             }
-        });
-        //데이터 수신 thread 시작
-        mWorkerThread.start();
-    }
 
-    public void SendResetSignal(){
-        String msg = "bs00000";
-        try {
-            mOutputStream.write(msg.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        @Override
+        protected void onProgressUpdate(String... recvMessage) {
+            editText2.setText(recvMessage[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSucess) {
+            super.onPostExecute(isSucess);
+
+            if ( !isSucess ) {
+                closeSocket();
+                Log.d(TAG, "Device connection was lost");
+            Toast.makeText(getApplicationContext(),"Device connection was lost",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onCancelled(Boolean aBoolean) {
+            super.onCancelled(aBoolean);
+
+            closeSocket();
+        }
+
+        void closeSocket(){
+
+            try {
+
+                mBluetoothSocket.close();
+                Log.d(TAG, "close socket()");
+
+            } catch (IOException e2) {
+
+                Log.e(TAG, "unable to close() " +
+                        " socket during connection failure", e2);
+            }
+        }
+
+        public void write(String msg){
+
+            msg += "\n";
+
+            try {
+                mOutputStream.write(msg.getBytes());
+                mOutputStream.flush();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during send", e );
+            }
+        }
+
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
+
         unregisterReceiver(mBluetoothStateReceiver);
         unregisterReceiver(mBluetoothSearchReceiver);
-        super.onDestroy();
+
+        if (mConnectedTask != null) {
+            mConnectedTask.cancel(true);
+        }
     }
 }

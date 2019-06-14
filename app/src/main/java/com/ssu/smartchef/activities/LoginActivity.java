@@ -1,6 +1,5 @@
 package com.ssu.smartchef.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,13 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ssu.smartchef.R;
-import com.ssu.smartchef.User;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -272,33 +264,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             startActivity(intent);
 
         }
-
-//            SignUpDialog signUpDialog = new SignUpDialog(LoginActivity.this);
-//            signUpDialog.setContentView(R.layout.signup_dialog);
-//
-//            // 디바이스 가로 세로 길이 가져오기
-//            DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-//            int width = dm.widthPixels;
-//            int height = dm.heightPixels;
-//
-//            // 다이얼로그 크기 조절하기
-//            WindowManager.LayoutParams layoutParams = signUpDialog.getWindow().getAttributes();
-//            layoutParams.copyFrom(signUpDialog.getWindow().getAttributes());
-//            layoutParams.width = width - width / 3;
-//            layoutParams.height = height / 3;
-//            signUpDialog.getWindow().setAttributes(layoutParams);
-//
-//            signUpDialog.show();
-//        }
-
-//        else if (i == R.id.signOutButton) {
-//            signOut();
-//        }
-//
-//        else if (i == R.id.disconnectButton) {
-//            revokeAccess();
-//        }
-
-
     }
 }
