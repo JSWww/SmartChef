@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.data.IngredientData;
@@ -134,7 +133,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(itemView.getContext(),this.getLayoutPosition()+"",Toast.LENGTH_SHORT).show();
+            listData.remove(getAdapterPosition());
+            notifyDataSetChanged();
         }
     }
 
