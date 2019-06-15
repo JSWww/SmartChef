@@ -255,8 +255,6 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.registSpice) {
             intent = new Intent(this,  RegistSpiceActivity.class);
             startActivity(intent);
-        } else if (id == R.id.setting) {
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

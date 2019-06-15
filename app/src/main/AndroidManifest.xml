@@ -25,10 +25,11 @@
 
 
         <activity android:name=".activities.testActivity" />
-        <activity android:name=".activities.ManualScaleActivity" />
+        <activity android:name=".activities.ManualScaleActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.RegistRecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.RecipeClickActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -49,7 +50,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"

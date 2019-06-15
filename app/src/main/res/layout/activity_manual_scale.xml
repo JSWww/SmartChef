@@ -18,44 +18,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:direction="clockwise"
-        app:progressStrokeWidth="16dp"
         app:formattingPattern="&#37;.2fg"
-        />
+        app:progressStrokeWidth="16dp" />
     <Space
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="무게를 측정합니다."
         android:textSize="30dp"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="Button" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="text"
-        android:inputType="textPersonName" />
+        android:visibility="visible" />
 
 
 </LinearLayout>

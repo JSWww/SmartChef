@@ -44,8 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="110dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="110dp"
+        android:background="@drawable/btn_shape"
         android:onClick="onClick"
-        android:text="@string/ok" />
+        android:text="@string/ok"
+        android:textColor="#607d8b" />
 </LinearLayout>

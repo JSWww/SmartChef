@@ -45,10 +45,6 @@ public class ManualScaleActivity extends AppCompatActivity {
 
     private CircularProgressIndicator circularProgress;
 
-    private EditText editText2;
-    private Button button;
-    private EditText editText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +53,8 @@ public class ManualScaleActivity extends AppCompatActivity {
         circularProgress = findViewById(R.id.circular_progress);
         circularProgress.setMaxProgress(1000);
 
-        button = findViewById(R.id.button);
-        editText = findViewById(R.id.editText);
-        editText2 = findViewById(R.id.editText2);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String sendMessage = editText.getText().toString();
-                if (sendMessage.length() > 0) {
-                    sendMessage(sendMessage);
-                }
-            }
-        });
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -235,7 +220,6 @@ public class ManualScaleActivity extends AppCompatActivity {
 
         if ( mConnectedTask != null ) {
             mConnectedTask.write(msg);
-            editText.setText("");
             Log.d(TAG, "send message: " + msg);
         }
     }
@@ -376,7 +360,6 @@ public class ManualScaleActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... recvMessage) {
-            editText2.setText(recvMessage[0]);
             double weight = Double.parseDouble(recvMessage[0]);
             circularProgress.setCurrentProgress(weight);
         }

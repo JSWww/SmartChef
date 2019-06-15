@@ -9,9 +9,9 @@
 
         <EditText
             android:id="@+id/regist_ingredient_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.45"
             android:ems="10"
             android:focusable="true"
             android:gravity="center_horizontal"
@@ -22,9 +22,9 @@
 
         <EditText
             android:id="@+id/regist_ingredient_weight"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.45"
             android:ems="10"
             android:focusable="true"
             android:gravity="center_horizontal"
@@ -35,11 +35,13 @@
 
         <ImageButton
             android:id="@+id/ingredientDeleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
             android:visibility="gone"
-            app:srcCompat="@android:drawable/presence_busy"
-            android:background="@android:color/transparent"/>
+            app:srcCompat="@drawable/ic_minus" />
 
 
 </LinearLayout>
