@@ -246,7 +246,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             if (!isConnected)
                 showPairedDevices();
             else
-                sendMessage("15");
+                sendMessage();
         }
     }
 
@@ -419,7 +419,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            sendMessage("15");
+            sendMessage();
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
@@ -518,7 +518,9 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    void sendMessage(String msg){
+    void sendMessage(){
+
+        String msg ="";
 
         if ( mConnectedTask != null ) {
             mConnectedTask.write(msg);
