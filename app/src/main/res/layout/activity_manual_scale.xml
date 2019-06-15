@@ -19,6 +19,7 @@
         android:layout_marginBottom="8dp"
         app:direction="clockwise"
         app:progressStrokeWidth="16dp"
+        app:formattingPattern="&#37;.2fg"
         />
     <Space
         android:layout_width="match_parent"

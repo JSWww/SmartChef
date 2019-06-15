@@ -35,6 +35,7 @@
             app:direction="clockwise"
             android:visibility="invisible"
             app:progressStrokeWidth="16dp"
+            app:formattingPattern="&#37;.2fg"
             />
     </FrameLayout>
 
