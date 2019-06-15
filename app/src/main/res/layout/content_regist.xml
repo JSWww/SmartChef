@@ -18,7 +18,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="레시피 제목" />
+            android:text="레시피 제목"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/regist_title"
@@ -27,20 +28,22 @@
             android:background="@color/colorPrimaryDark"
             android:ems="10"
             android:hint="예) 부대찌개"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="22sp" />
 
         <ImageView
             android:id="@+id/regist_image"
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:background="@color/colorPrimary"
-            android:scaleType="fitStart"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/regist_camera" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="요리소개" />
+            android:text="요리소개"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/regist_explain"
@@ -49,12 +52,14 @@
             android:background="@color/colorPrimaryDark"
             android:ems="10"
             android:hint="이 레시피를 설명해주세요                                                   예)엄마가 해주셨던 푸짐한 부대찌개의 맛"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:textSize="22sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="카테고리" />
+            android:text="카테고리"
+            android:textSize="18sp" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -97,7 +102,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="요리정보" />
+            android:text="요리정보"
+            android:textSize="18sp" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -112,7 +118,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="인원" />
+                    android:text="인원"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/regist_person"
@@ -121,7 +128,8 @@
                     android:background="@color/colorPrimaryDark"
                     android:ems="10"
                     android:hint="예)0인분"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textSize="22sp" />
             </TableRow>
 
             <TableRow
@@ -132,7 +140,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="시간" />
+                    android:text="시간"
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/regist_time"
@@ -141,14 +150,16 @@
                     android:background="@color/colorPrimaryDark"
                     android:ems="10"
                     android:hint="예)0분"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textSize="22sp" />
             </TableRow>
         </TableLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="요리단계" />
+            android:text="요리단계"
+            android:textSize="18sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/regist_recyclerView"

@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,14 +26,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.IngredientAdapter;
+import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.data.RecipeStepData;
+import com.ssu.smartchef.data.SpiceData;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -50,6 +57,7 @@ public class StepExplainActivity extends AppCompatActivity {
     int index = 0;
     int ingredientIndex = 0;
     boolean isScale=false;
+    ArrayList<SpiceData> saveData;
 
     private static final int REQUEST_ENABLE_BT = 1001;
     private BluetoothAdapter mBluetoothAdapter;
@@ -106,6 +114,7 @@ public class StepExplainActivity extends AppCompatActivity {
         stepScale = findViewById(R.id.runStepScale);
         pre = findViewById(R.id.runStepBackButton);
         next = findViewById(R.id.runStepNextButton);
+        onSearchData();
         init();
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,12 +125,17 @@ public class StepExplainActivity extends AppCompatActivity {
                 else if(isScale == false){
                     isScale = true;
                 }
-                if(ingredientIndex == stepList.get(index).getIngredientArrayList().size()){
+                if(ingredientIndex >= stepList.get(index).getIngredientArrayList().size()){
                     index++;
                     ingredientIndex = 0;
                     isScale = false;
                 }
-                dataChange(index,isScale,ingredientIndex);
+                if(isScale == true &&stepList.get(index).getIngredientArrayList().size() != 0&&isIn(saveData,stepList.get(index).getIngredientArrayList().get(ingredientIndex).getIngredientName()) == true){
+                    this.onClick(v);
+                }
+                else{
+                    dataChange(index,isScale,ingredientIndex);
+                }
             }
         });
         pre.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +143,7 @@ public class StepExplainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(isScale == true){
                     ingredientIndex--;
-                    if(ingredientIndex == -1){
+                    if(ingredientIndex < 0){
                         ingredientIndex = 0 ;
                         isScale = false;
                     }
@@ -138,7 +152,9 @@ public class StepExplainActivity extends AppCompatActivity {
                     index--;
                     ingredientIndex = stepList.get(index).getIngredientArrayList().size() - 1;
                     isScale = true;
-
+                }
+                if(isScale == true && stepList.get(index).getIngredientArrayList().size() != 0&&isIn(saveData,stepList.get(index).getIngredientArrayList().get(ingredientIndex).getIngredientName()) == true){
+                    this.onClick(v);
                 }
                 dataChange(index,isScale,ingredientIndex);
             }
@@ -176,7 +192,7 @@ public class StepExplainActivity extends AppCompatActivity {
         else{
             pre.setVisibility(View.VISIBLE);
         }
-        if(index == stepList.size() - 1 && ingredientIndex == stepList.get(index).getIngredientArrayList().size() - 1){
+        if(index == stepList.size() - 1 && (ingredientIndex == stepList.get(index).getIngredientArrayList().size() - 1 || stepList.get(index).getIngredientArrayList().size() ==0)){
             next.setVisibility(View.INVISIBLE);
         }
         else{
@@ -248,6 +264,24 @@ public class StepExplainActivity extends AppCompatActivity {
             }
         }
     };
+
+    protected void onSearchData() {
+        Gson gson = new GsonBuilder().create();
+        SharedPreferences sp = getSharedPreferences("spice", MODE_PRIVATE);
+        String strSpice = sp.getString("spicedata", null);
+        if (strSpice != null) {
+            Type listType = new TypeToken<ArrayList<SpiceData>>() {}.getType();
+            saveData = gson.fromJson(strSpice, listType);
+        }
+    }
+    boolean isIn(ArrayList<SpiceData> data,String name){
+        for(int i = 0 ; i < data.size() ; i++){
+            if(data.get(i).getName().equals(name) == true){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void showPairedDevices()
     {
