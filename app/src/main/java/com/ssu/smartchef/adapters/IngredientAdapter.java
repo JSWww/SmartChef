@@ -32,8 +32,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder,  int i) {
         itemViewHolder.onBind(listData.get(i));
+
         if(seletedPosition == i){
             itemViewHolder.ingredientText.setTextColor(Color.BLUE);
             itemViewHolder.ingredientWeight.setTextColor(Color.BLUE);
@@ -50,8 +51,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (listData.get(i).isEditable())
-                    listData.get(i).setIngredientName(s.toString());
+                if (listData.get(itemViewHolder.getAdapterPosition()).isEditable())
+                    listData.get(itemViewHolder.getAdapterPosition()).setIngredientName(s.toString());
             }
 
             @Override
@@ -67,15 +68,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (listData.get(i).isEditable()) {
+
+                if (listData.get(itemViewHolder.getAdapterPosition()).isEditable()) {
                     if (s.toString().contains("g"))
-                        listData.get(i).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
+                        listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
                     else {
                         if (s.toString().equals(""))
-                            listData.get(i).setIngredientWeight(0);
+                            listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(0);
                         else
-                            listData.get(i).setIngredientWeight(Double.parseDouble(s.toString()));
-
+                            listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(Double.parseDouble(s.toString()));
                     }
                 }
             }
@@ -109,12 +110,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
             ingredientText = itemView.findViewById(R.id.regist_ingredient_name);
             ingredientWeight = itemView.findViewById(R.id.regist_ingredient_weight);
             deleteButton = itemView.findViewById(R.id.ingredientDeleteButton);
+            deleteButton.setOnClickListener(this);
         }
 
         void onBind(IngredientData data) {
 
             if (data.isEditable()) {
                 ingredientText.setText(data.getIngredientName());
+                deleteButton.setVisibility(View.VISIBLE);
 
                 if (data.getIngredientWeight() != 0)
                     ingredientWeight.setText((int)(data.getIngredientWeight()) + "");
@@ -125,16 +128,23 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
                     ingredientWeight.setText(String.format("%.0fg", data.getIngredientWeight()));
                 else
                     ingredientWeight.setText(String.format("%.1fg", data.getIngredientWeight()));
+
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
-                deleteButton.setOnClickListener(this);
             }
+            ingredientText.requestFocus();
         }
 
         @Override
         public void onClick(View v) {
-            listData.remove(getAdapterPosition());
-            notifyDataSetChanged();
+            int id = v.getId();
+
+            switch (id) {
+                case R.id.ingredientDeleteButton:
+                    listData.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    break;
+            }
         }
     }
 

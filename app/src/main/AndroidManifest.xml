@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +17,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.RegistSpiceActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activities.StepExplainActivity" />
         <activity android:name=".activities.testActivity" />
         <activity android:name=".activities.ManualScaleActivity" />
         <activity
             android:name=".activities.RegistRecipeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.RecipeClickActivity" />
+        <activity
+            android:name=".activities.RecipeClickActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activities.EmailLoginActivity"
             android:label="SmartChef"

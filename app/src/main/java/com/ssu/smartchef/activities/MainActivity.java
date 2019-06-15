@@ -256,8 +256,9 @@ public class MainActivity extends BaseActivity
             intent = new Intent(this, ManualScaleActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.cookhelp) {
-
+        } else if (id == R.id.registSpice) {
+            intent = new Intent(this,  RegistSpiceActivity.class);
+            startActivity(intent);
         } else if (id == R.id.setting) {
 
         }

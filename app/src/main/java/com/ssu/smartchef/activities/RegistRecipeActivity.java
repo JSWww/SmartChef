@@ -106,7 +106,7 @@ public class RegistRecipeActivity extends BaseActivity {
                 layoutParams.height = layoutParams.height * 2;
                 adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemChanged(adapter.getItemCount());
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +134,7 @@ public class RegistRecipeActivity extends BaseActivity {
             }
         });
 
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
@@ -150,6 +151,7 @@ public class RegistRecipeActivity extends BaseActivity {
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
     private void init() {
         recyclerView = findViewById(R.id.regist_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
