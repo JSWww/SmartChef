@@ -109,7 +109,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         void onBind(RecipeStepData data) {
             title.setText(data.getStepTitle());
             explain.setText(data.getStepExplain());
-            itemListDataAdapter.notifyDataSetChanged();
+            title.requestFocus();
         }
 
         @Override
@@ -119,7 +119,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
                 itemListDataAdapter.addItem(new IngredientData());
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(v.getContext());
                 items.setLayoutManager(linearLayoutManager);
-                itemListDataAdapter.notifyDataSetChanged();
+                itemListDataAdapter.notifyItemChanged(itemListDataAdapter.getItemCount());
             }
             else if(v.getId() == R.id.regist_step_food){
                 test = food;

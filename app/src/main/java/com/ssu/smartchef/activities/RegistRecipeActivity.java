@@ -106,7 +106,7 @@ public class RegistRecipeActivity extends BaseActivity {
                 layoutParams.height = layoutParams.height * 2;
                 adapter.addItem(new RecipeStepData());
                 recyclerView.setLayoutParams(layoutParams);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemChanged(adapter.getItemCount());
             }
         });
         save.setOnClickListener(new View.OnClickListener() {

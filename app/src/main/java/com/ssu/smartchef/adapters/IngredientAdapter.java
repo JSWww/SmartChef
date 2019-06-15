@@ -132,6 +132,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
             }
+            ingredientText.requestFocus();
         }
 
         @Override
