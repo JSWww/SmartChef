@@ -528,6 +528,8 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     }
 
     void sendMessage(){
+        String send_msg ="";
+      
         compare(spiceList,ingredientAdapter.getListData());
 
         for(int i = 0 ; i < sendDataList.size(); i++){
@@ -540,7 +542,6 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             if(i == sendDataList.size() - 1){
                 send_msg = send_msg + "&"; //끝을 알리는 문자 &
             }
-
         }
         if ( mConnectedTask != null ) {
             mConnectedTask.write(send_msg);
