@@ -39,9 +39,9 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, final int i) {
-        itemViewHolder.onBind(listData.get(i));
-        listData.get(i).setIngredientArrayList(itemViewHolder.itemListDataAdapter.getListData());
+    public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, final int i) {
+        itemViewHolder.onBind(listData.get(itemViewHolder.getAdapterPosition()));
+        listData.get(itemViewHolder.getAdapterPosition()).setIngredientArrayList(itemViewHolder.itemListDataAdapter.getListData());
 
         itemViewHolder.title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -51,7 +51,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setStepTitle(s.toString());
+                listData.get(itemViewHolder.getAdapterPosition()).setStepTitle(s.toString());
             }
 
             @Override
@@ -67,7 +67,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(i).setStepExplain(s.toString());
+                listData.get(itemViewHolder.getAdapterPosition()).setStepExplain(s.toString());
             }
 
             @Override

@@ -68,17 +68,12 @@ public class MainActivity extends BaseActivity
                     case R.id.micButton:
                         Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
                         break ;
-                    case R.id.cameraButton:
-                        Toast.makeText(getApplicationContext(),"camera",Toast.LENGTH_SHORT).show();
-                        break ;
                 }
             }
         };
 
         ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        ImageView cameraButton = (ImageView)findViewById(R.id.cameraButton);
         micButton.setOnClickListener(onClickListener);
-        cameraButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Intent intent = getIntent();
         nickName = intent.getStringExtra("nickName");
@@ -93,7 +88,7 @@ public class MainActivity extends BaseActivity
         }
 
         Menu menuNav = navigationView.getMenu();
-        MenuItem registItem = menuNav.findItem(R.id.regist);
+        final MenuItem registItem = menuNav.findItem(R.id.regist);
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null)
             registItem.setVisible(false);
@@ -109,6 +104,7 @@ public class MainActivity extends BaseActivity
                     mAuth.signOut();
                     nickNameTextView.setText("로그인하세요");
                     loginButton.setText("login");
+                    registItem.setVisible(false);
 
                     SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
