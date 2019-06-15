@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:weightSum="1">
 
 
-    <TextView
+    <EditText
         android:id="@+id/spiceNum"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="넘버" />
+        android:layout_weight="0.3"
+        android:ems="10"
+        android:focusable="true"
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/spiceName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
+        android:layout_weight="0.7"
         android:ems="10"
         android:focusable="true"
         android:hint="재료명"

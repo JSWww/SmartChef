@@ -71,9 +71,25 @@ public class RegistRecipeActivity extends BaseActivity {
         list3 = new ArrayList<>();
         list4 = new ArrayList<>();
         list1.add("::종류별");
+        list1.add("밑반찬");
+        list1.add("메인반찬");
+        list1.add("국/탕");
+        list1.add("찌개");
+        list1.add("디저트");
         list2.add("::상황별");
+        list2.add("초스피드");
+        list2.add("손님접대");
+        list2.add("술안주");
         list3.add("::재료별");
+        list3.add("소고기");
+        list3.add("돼지고기");
+        list3.add("닭고기");
         list4.add("::방법별");
+        list4.add("볶음");
+        list4.add("끓이기");
+        list4.add("부침");
+        list4.add("굽기");
+
         ArrayAdapter spinner1Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list1);
         ArrayAdapter spinner2Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list2);
         ArrayAdapter spinner3Adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list3);

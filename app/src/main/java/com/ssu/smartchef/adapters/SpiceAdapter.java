@@ -49,6 +49,22 @@ public class SpiceAdapter extends RecyclerView.Adapter<SpiceAdapter.ItemViewHold
 
             }
         });
+        itemViewHolder.spiceNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listData.get(itemViewHolder.getAdapterPosition()).setNum(Integer.parseInt(s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
     public void addItem(SpiceData data) {
         // 외부에서 item을 추가시킬 함수입니다.
@@ -71,7 +87,6 @@ public class SpiceAdapter extends RecyclerView.Adapter<SpiceAdapter.ItemViewHold
         }
 
         void onBind(SpiceData data) {
-            data.setNum(getAdapterPosition()+1);
             spiceName.setText(data.getName());
             spiceNum.setText(data.getNum()+"");
             spiceName.requestFocus();
