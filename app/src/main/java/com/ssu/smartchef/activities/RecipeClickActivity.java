@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,17 +32,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.ssu.smartchef.R;
 import com.ssu.smartchef.adapters.IngredientAdapter;
 import com.ssu.smartchef.adapters.RecipeOrderAdapter;
 import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.data.RecipeStepData;
+import com.ssu.smartchef.data.SpiceData;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -75,7 +81,9 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private ImageView recipeFood;
 
     private ArrayList<Double> ingredientWeight_list;
-
+    private ArrayList<SpiceData> spiceList;
+    private ArrayList<sendData> sendDataList = new ArrayList<>();
+    String send_msg="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +119,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
         recipeRef = mRootRef.child("recipelist").child(recipeID);
-
+        onSearchData();
         recipeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -194,6 +202,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.extractButton:
                 pressExtractButton();
+               // Toast.makeText(getApplicationContext(),send_msg,Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.playButton:
@@ -519,13 +528,26 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     }
 
     void sendMessage(){
+        String send_msg ="";
+      
+        compare(spiceList,ingredientAdapter.getListData());
 
-        String msg ="";
-
-        if ( mConnectedTask != null ) {
-            mConnectedTask.write(msg);
-            Log.d(TAG, "send message: " + msg);
+        for(int i = 0 ; i < sendDataList.size(); i++){
+            if(i == 0){
+                send_msg = send_msg + sendDataList.get(i).tomsg(); //재료번호와 무게 비교문자 /
+            }
+            else{
+                send_msg = send_msg +"," + sendDataList.get(i).tomsg(); //각각의 데이터 비교 문자 ,
+            }
+            if(i == sendDataList.size() - 1){
+                send_msg = send_msg + "&"; //끝을 알리는 문자 &
+            }
         }
+        if ( mConnectedTask != null ) {
+            mConnectedTask.write(send_msg);
+            Log.d(TAG, "send message: " + send_msg);
+        }
+
     }
 
     @Override
@@ -552,4 +574,58 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             mConnectedTask.cancel(true);
         }
     }
+    public class sendData {
+        int spiceNum;
+        double spiceWeight;
+        sendData(int num,double weight){
+            spiceNum = num;
+            spiceWeight = weight;
+        }
+        public int getSpiceNum() {
+            return spiceNum;
+        }
+
+        public void setSpiceNum(int spiceNum) {
+            this.spiceNum = spiceNum;
+        }
+
+        public double getSpiceWeight() {
+            return spiceWeight;
+        }
+
+        public void setSpiceWeight(int spiceWeight) {
+            this.spiceWeight = spiceWeight;
+        }
+
+        String tomsg(){
+            return spiceNum+"/"+spiceWeight;
+        }
+    }
+    protected void onSearchData() {
+        Gson gson = new GsonBuilder().create();
+        SharedPreferences sp = getSharedPreferences("spice", MODE_PRIVATE);
+        String strSpice = sp.getString("spicedata", null);
+        if (strSpice != null) {
+            Type listType = new TypeToken<ArrayList<SpiceData>>() {}.getType();
+            ArrayList<SpiceData> saveData = gson.fromJson(strSpice, listType);
+            spiceList = saveData;
+        }
+    }
+    void compare(ArrayList<SpiceData> sd, ArrayList<IngredientData> id){
+        String name;
+        int spiceId;
+        double weight;
+        for(int i = 0 ; i< sd.size() ; i++){
+            name = sd.get(i).getName();
+            spiceId = sd.get(i).getNum();
+            for(int j = 0 ; j < id.size() ; j++){
+                if(name.equals(id.get(j).getIngredientName()) == true){
+                    weight = id.get(j).getIngredientWeight();
+                    sendDataList.add(new sendData(spiceId,weight));
+                }
+            }
+        }
+    }
 }
+
+
