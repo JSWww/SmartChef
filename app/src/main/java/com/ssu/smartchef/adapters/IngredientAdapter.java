@@ -121,6 +121,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
 
                 if (data.getIngredientWeight() != 0)
                     ingredientWeight.setText((int)(data.getIngredientWeight()) + "");
+
+                ingredientText.requestFocus();
             }
             else {
                 ingredientText.setText(data.getIngredientName());
@@ -132,7 +134,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
                 ingredientText.setEnabled(false);
                 ingredientWeight.setEnabled(false);
             }
-            ingredientText.requestFocus();
         }
 
         @Override

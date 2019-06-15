@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -88,43 +89,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/numPerson"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.45"
                 android:gravity="center"
                 android:text="1인분"
                 android:textSize="20sp" />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1" />
+
             <Button
                 android:id="@+id/addButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:onClick="onClick"
-                android:text="추가"
-                android:textSize="14sp" />
+                android:layout_marginRight="15dp"
+                android:layout_weight="0.15"
+                android:background="@drawable/ic_add_circle"
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/subButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:onClick="onClick"
-                android:text="감소" />
+                android:layout_marginRight="15dp"
+                android:layout_weight="0.15"
+                android:background="@drawable/ic_minus"
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/resetButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:onClick="onClick"
-                android:text="reset" />
+                android:layout_weight="0.15"
+                android:background="@drawable/ic_reset"
+                android:onClick="onClick" />
 
         </LinearLayout>
 
@@ -136,7 +143,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" >
+            android:overScrollMode="never">
 
         </android.support.v7.widget.RecyclerView>
 

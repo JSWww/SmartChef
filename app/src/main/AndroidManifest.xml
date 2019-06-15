@@ -20,7 +20,9 @@
         <activity android:name=".activities.RegistSpiceActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".activities.StepExplainActivity" />
+        <activity android:name=".activities.StepExplainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
 
         <activity android:name=".activities.testActivity" />
         <activity android:name=".activities.ManualScaleActivity" />
@@ -29,6 +31,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RecipeClickActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activities.EmailLoginActivity"

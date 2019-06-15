@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private static final int REQUEST_ENABLE_BT = 1001;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothDevice mBluetoothDevice;
-    private String DEVICE_NAME = "rasberrypi";
+    private String DEVICE_NAME = "raspberrypi";
 //    private String DEVICE_NAME = "jsw-pc";
 
     private String TAG = "RecipeClickActivity";
@@ -68,6 +69,8 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private RecipeOrderAdapter recipeOrderAdapter;
     private DatabaseReference mRootRef;
     private DatabaseReference recipeRef;
+
+    private ScrollView scrollView;
 
     private RecyclerView ingredientRecycler;
     private RecyclerView recipeOrderRecycler;
@@ -83,12 +86,14 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<Double> ingredientWeight_list;
     private ArrayList<SpiceData> spiceList;
     private ArrayList<sendData> sendDataList = new ArrayList<>();
-    String send_msg="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_click);
+
+        scrollView = findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0,0);
 
         recipeName = findViewById(R.id.recipeName);
         nickName = findViewById(R.id.nickName);
@@ -521,6 +526,8 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             try {
                 mOutputStream.write(msg.getBytes());
                 mOutputStream.flush();
+                sendDataList.clear();
+
             } catch (IOException e) {
                 Log.e(TAG, "Exception during send", e );
             }
@@ -533,15 +540,11 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         compare(spiceList,ingredientAdapter.getListData());
 
         for(int i = 0 ; i < sendDataList.size(); i++){
-            if(i == 0){
-                send_msg = send_msg + sendDataList.get(i).tomsg(); //재료번호와 무게 비교문자 /
-            }
-            else{
-                send_msg = send_msg +"," + sendDataList.get(i).tomsg(); //각각의 데이터 비교 문자 ,
-            }
-            if(i == sendDataList.size() - 1){
-                send_msg = send_msg + "&"; //끝을 알리는 문자 &
-            }
+            if (i == 0)
+                send_msg +=  sendDataList.get(i).tomsg(); //각각의 데이터 비교 문자 ,
+            else
+                send_msg += "/" +  sendDataList.get(i).tomsg(); //각각의 데이터 비교 문자 ,
+
         }
         if ( mConnectedTask != null ) {
             mConnectedTask.write(send_msg);

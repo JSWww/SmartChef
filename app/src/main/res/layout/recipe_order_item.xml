@@ -41,18 +41,18 @@
 
             <ImageView
                 android:id="@+id/stepImage"
-                android:layout_width="5dp"
+                android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_weight="1"
-                android:scaleType="center"
+                android:layout_weight="0.4"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/basic_icon" />
 
             <TextView
                 android:id="@+id/stepExplain"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:text="상세설명"
                 android:textSize="18sp" />
         </LinearLayout>
