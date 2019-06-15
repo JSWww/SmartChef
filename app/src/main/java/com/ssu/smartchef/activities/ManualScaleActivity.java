@@ -31,6 +31,8 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.UUID;
 
+import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
+
 public class ManualScaleActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 1001;
@@ -39,6 +41,9 @@ public class ManualScaleActivity extends AppCompatActivity {
     private ConnectedTask mConnectedTask = null;
     private static final String TAG = "BluetoothClient";
     private String DEVICE_NAME = "jsw-pc";
+//    private String DEVICE_NAME = "raspberrypi";
+
+    private CircularProgressIndicator circularProgress;
 
     private EditText editText2;
     private Button button;
@@ -48,6 +53,9 @@ public class ManualScaleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_scale);
+
+        circularProgress = findViewById(R.id.circular_progress);
+        circularProgress.setMaxProgress(1000);
 
         button = findViewById(R.id.button);
         editText = findViewById(R.id.editText);
@@ -369,6 +377,8 @@ public class ManualScaleActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... recvMessage) {
             editText2.setText(recvMessage[0]);
+            double weight = Double.parseDouble(recvMessage[0]);
+            circularProgress.setCurrentProgress(weight);
         }
 
         @Override

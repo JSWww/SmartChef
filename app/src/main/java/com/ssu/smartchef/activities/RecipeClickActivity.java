@@ -51,7 +51,9 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     private static final int REQUEST_ENABLE_BT = 1001;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothDevice mBluetoothDevice;
-    private String DEVICE_NAME = "jsw-pc";
+    private String DEVICE_NAME = "rasberrypi";
+//    private String DEVICE_NAME = "jsw-pc";
+
     private String TAG = "RecipeClickActivity";
     private ConnectedTask mConnectedTask = null;
     private boolean isConnected = false;
@@ -244,7 +246,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             if (!isConnected)
                 showPairedDevices();
             else
-                sendMessage("2nd test");
+                sendMessage("15");
         }
     }
 
@@ -417,7 +419,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            sendMessage("test");
+            sendMessage("15");
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
@@ -435,7 +437,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
 
                         byte[] packetBytes = new byte[bytesAvailable];
 
-                        mInputStream.read(packetBytes);
+                        mInputStream. read(packetBytes);
 
                         for(int i=0;i<bytesAvailable;i++) {
 
