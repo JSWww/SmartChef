@@ -1,12 +1,19 @@
 package com.ssu.smartchef.activities;
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,7 +44,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    //음성인식
+    Intent i;
+    SpeechRecognizer mRecognizer;
+    //
     private mainAdapter adapter;
     private String nickName;
     private TextView nickNameTextView;
@@ -61,19 +71,7 @@ public class MainActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        Button.OnClickListener onClickListener = new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.micButton:
-                        Toast.makeText(getApplicationContext(),"mic",Toast.LENGTH_SHORT).show();
-                        break ;
-                }
-            }
-        };
 
-        ImageView micButton = (ImageView) findViewById(R.id.micButton);
-        micButton.setOnClickListener(onClickListener);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Intent intent = getIntent();
         nickName = intent.getStringExtra("nickName");
@@ -86,6 +84,117 @@ public class MainActivity extends BaseActivity
             nickNameTextView.setText(nickName);
             loginButton.setText("logout");
         }
+        /*음성인식*/
+        RecognitionListener listener = new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params) {
+                System.out.println("onReadyForSpeech.........................");
+            }
+            @Override
+            public void onBeginningOfSpeech() {
+               // Toast.makeText(getApplicationContext(), "지금부터 말을 해주세요!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+                System.out.println("onRmsChanged.........................");
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+                System.out.println("onBufferReceived.........................");
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                System.out.println("onEndOfSpeech.........................");
+            }
+
+            @Override
+            public void onError(int error) {
+                String message;
+
+                switch (error) {
+                    case SpeechRecognizer.ERROR_AUDIO:
+                        message = "오디오 에러";
+                        break;
+                    case SpeechRecognizer.ERROR_CLIENT:
+                        message = "클라이언트 에러";
+                        break;
+                    case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                        message = "퍼미션 없음";
+                        break;
+                    case SpeechRecognizer.ERROR_NETWORK:
+                        message = "네트워크 에러";
+                        break;
+                    case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                        message = "네트웍 타임아웃";
+                        break;
+                    case SpeechRecognizer.ERROR_NO_MATCH:
+                        message = "찾을 수 없음";
+                        break;
+                    case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                        message = "RECOGNIZER가 바쁨";
+                        break;
+                    case SpeechRecognizer.ERROR_SERVER:
+                        message = "서버가 이상함";
+                        break;
+                    case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                        message = "말하는 시간초과";
+                        break;
+                    default:
+                        message = "알 수 없는 오류임";
+                        break;
+                }
+
+                Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message,Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+                System.out.println("onPartialResults.........................");
+            }
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+                System.out.println("onEvent.........................");
+            }
+
+            @Override
+            public void onResults(Bundle results) {
+                String key= "";
+                key = SpeechRecognizer.RESULTS_RECOGNITION;
+                ArrayList<String> mResult = results.getStringArrayList(key);
+                String[] rs = new String[mResult.size()];
+                mResult.toArray(rs);
+                searchView.setQuery(rs[0],false);
+            }
+        };
+        i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getApplicationContext().getPackageName());
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+        mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+        mRecognizer.setRecognitionListener(listener);
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("-------------------------------------- 음성인식 시작!");
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 100);
+                    //권한을 허용하지 않는 경우
+                } else {
+                    //권한을 허용한 경우
+                    try {
+                        mRecognizer.startListening(i);
+                    } catch(SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        ImageView micButton = (ImageView) findViewById(R.id.micButton);
+        micButton.setOnClickListener(onClickListener);
+        /*음성인식*/
 
         Menu menuNav = navigationView.getMenu();
         final MenuItem registItem = menuNav.findItem(R.id.regist);
