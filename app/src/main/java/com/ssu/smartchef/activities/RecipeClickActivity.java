@@ -207,7 +207,6 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.extractButton:
                 pressExtractButton();
-               // Toast.makeText(getApplicationContext(),send_msg,Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.playButton:
@@ -285,14 +284,13 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if (device.getName() != null)
                         if (device.getName().equals(DEVICE_NAME)) {
-                            Toast.makeText(getApplicationContext(), "해당 디바이스 찾음", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "SmartChef 장치 찾음", Toast.LENGTH_SHORT).show();
                             mBluetoothDevice = device;
                             mBluetoothAdapter.cancelDiscovery();
                         }
                     break;
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    Toast.makeText(getApplicationContext(), "블루투스 검색 종료", Toast.LENGTH_SHORT).show();
 
                     if (mBluetoothDevice != null) {
                         try {
@@ -306,6 +304,9 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
                         }
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "장치를 찾지 못 함", Toast.LENGTH_SHORT).show();
                     }
                     break;
 
@@ -330,7 +331,6 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         if(pairedDevice.size() > 0) {
             for (BluetoothDevice device : pairedDevice) {
                 if (device.getName().equals(DEVICE_NAME)) {
-                    Toast.makeText(getApplicationContext(), "이미 페어링 되어 있음", Toast.LENGTH_SHORT).show();
                     isPaired = true;
                     ConnectTask task = new ConnectTask(device);
                     task.execute();
@@ -340,7 +340,6 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (!isPaired) {
-            Toast.makeText(getApplicationContext(), "페어링 안 되어 있음", Toast.LENGTH_SHORT).show();
             mBluetoothAdapter.startDiscovery();
         }
     }
@@ -395,13 +394,14 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         protected void onPostExecute(Boolean isSucess) {
 
             if ( isSucess ) {
+                Toast.makeText(getApplicationContext(), "장치와 연결되었습니다.", Toast.LENGTH_SHORT).show();
                 connected(mBluetoothSocket);
                 isConnected = true;
             }
             else{
 
                 Log.d( TAG,  "Unable to connect device");
-                Toast.makeText(getApplicationContext(), "Unable to connect device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "장치와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -495,7 +495,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
             if ( !isSucess ) {
                 closeSocket();
                 Log.d(TAG, "Device connection was lost");
-                Toast.makeText(getApplicationContext(),"Device connection was lost",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"장치와의 연결이 끊겼습니다.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -562,7 +562,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                 showPairedDevices();
             }
             else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(), "failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "블루투스 실행 취소", Toast.LENGTH_SHORT).show();
             }
         }
     }

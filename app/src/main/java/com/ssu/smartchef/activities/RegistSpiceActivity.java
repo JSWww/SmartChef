@@ -9,9 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,6 +55,11 @@ public class RegistSpiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onSaveData();
+
+                Toast toast = Toast.makeText(getApplicationContext(), "양념이 저장되었습니다.", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
+                toast.show();
+
                 Intent intent = new Intent(RegistSpiceActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

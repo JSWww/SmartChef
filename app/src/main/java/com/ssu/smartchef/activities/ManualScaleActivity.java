@@ -16,9 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ssu.smartchef.R;
@@ -40,8 +37,8 @@ public class ManualScaleActivity extends AppCompatActivity {
     private BluetoothDevice mBluetoothDevice;
     private ConnectedTask mConnectedTask = null;
     private static final String TAG = "BluetoothClient";
-    private String DEVICE_NAME = "jsw-pc";
-//    private String DEVICE_NAME = "raspberrypi";
+//    private String DEVICE_NAME = "jsw-pc";
+    private String DEVICE_NAME = "raspberrypi";
 
     private CircularProgressIndicator circularProgress;
 
@@ -52,8 +49,6 @@ public class ManualScaleActivity extends AppCompatActivity {
 
         circularProgress = findViewById(R.id.circular_progress);
         circularProgress.setMaxProgress(1000);
-
-
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -68,12 +63,8 @@ public class ManualScaleActivity extends AppCompatActivity {
             return;
         }
 
-        //블루투스 브로드캐스트 리시버 등록
-        //리시버1
-        IntentFilter stateFilter = new IntentFilter();
-        stateFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED); //BluetoothAdapter.ACTION_STATE_CHANGED : 블루투스 상태변화 액션
-        registerReceiver(mBluetoothStateReceiver, stateFilter);
-        //리시버2
+
+        //리시버
         IntentFilter searchFilter = new IntentFilter();
         searchFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED); //BluetoothAdapter.ACTION_DISCOVERY_STARTED : 블루투스 검색 시작
         searchFilter.addAction(BluetoothDevice.ACTION_FOUND); //BluetoothDevice.ACTION_FOUND : 블루투스 디바이스 찾음
@@ -90,35 +81,6 @@ public class ManualScaleActivity extends AppCompatActivity {
             showPairedDevices();
         }
     }
-
-    //블루투스 상태변화 BroadcastReceiver
-    BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // TODO: This method is called when the BroadcastReceiver is receiving
-            // an Intent broadcast.
-
-            int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
-
-            //블루투스 활성화
-            if (state == BluetoothAdapter.STATE_ON) {
-                Log.d("abc", "블루투스 활성화");
-            }
-            //블루투스 활성화 중
-            else if (state == BluetoothAdapter.STATE_TURNING_ON) {
-                Log.d("abc", "블루투스 활성화 중...");
-            }
-            //블루투스 비활성화
-            else if (state == BluetoothAdapter.STATE_OFF) {
-                Log.d("abc", "블루투스 비활성화");
-            }
-            //블루투스 비활성화 중
-            else if (state == BluetoothAdapter.STATE_TURNING_OFF) {
-                Log.d("abc", "블루투스 비활성화 중...");
-            }
-        }
-    };
 
     //블루투스 검색결과 BroadcastReceiver
     BroadcastReceiver mBluetoothSearchReceiver = new BroadcastReceiver() {
@@ -141,20 +103,19 @@ public class ManualScaleActivity extends AppCompatActivity {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if (device.getName() != null)
                         if (device.getName().equals(DEVICE_NAME)) {
-                            Toast.makeText(getApplicationContext(), "해당 디바이스 찾음", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "SmartChef 장치 찾음", Toast.LENGTH_SHORT).show();
                             mBluetoothDevice = device;
                             mBluetoothAdapter.cancelDiscovery();
                         }
                     break;
                 //블루투스 디바이스 검색 종료
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    Toast.makeText(getApplicationContext(), "블루투스 검색 종료", Toast.LENGTH_SHORT).show();
+
 
                     if (mBluetoothDevice != null) {
                         try {
                             Method method = mBluetoothDevice.getClass().getMethod("createBond", (Class[]) null);
                             method.invoke(mBluetoothDevice, (Object[]) null);
-
                         } catch (NoSuchMethodException e) {
                             e.printStackTrace();
                         } catch (IllegalAccessException e) {
@@ -162,6 +123,10 @@ public class ManualScaleActivity extends AppCompatActivity {
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    else {
+                        Toast.makeText(getApplicationContext(), "장치를 찾지 못 함", Toast.LENGTH_SHORT).show();
                     }
                     break;
 
@@ -188,7 +153,7 @@ public class ManualScaleActivity extends AppCompatActivity {
                 showPairedDevices();
             }
             else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(), "failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "블루투스 실행 취소", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -201,7 +166,6 @@ public class ManualScaleActivity extends AppCompatActivity {
         if(pairedDevice.size() > 0) {
             for (BluetoothDevice device : pairedDevice) {
                 if (device.getName().equals(DEVICE_NAME)) {
-                    Toast.makeText(getApplicationContext(), "이미 페어링 되어 있음", Toast.LENGTH_SHORT).show();
                     isPaired = true;
                     ConnectTask task = new ConnectTask(device);
                     task.execute();
@@ -211,7 +175,6 @@ public class ManualScaleActivity extends AppCompatActivity {
         }
 
         if (!isPaired) {
-            Toast.makeText(getApplicationContext(), "페어링 안 되어 있음", Toast.LENGTH_SHORT).show();
             mBluetoothAdapter.startDiscovery();
         }
     }
@@ -273,12 +236,13 @@ public class ManualScaleActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean isSucess) {
 
             if ( isSucess ) {
+                Toast.makeText(getApplicationContext(), "장치와 연결되었습니다.", Toast.LENGTH_SHORT).show();
                 connected(mBluetoothSocket);
             }
             else{
 
                 Log.d( TAG,  "Unable to connect device");
-                Toast.makeText(getApplicationContext(), "Unable to connect device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "장치와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -371,7 +335,7 @@ public class ManualScaleActivity extends AppCompatActivity {
             if ( !isSucess ) {
                 closeSocket();
                 Log.d(TAG, "Device connection was lost");
-            Toast.makeText(getApplicationContext(),"Device connection was lost",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"장치와의 연결이 끊겼습니다.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -414,7 +378,6 @@ public class ManualScaleActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(mBluetoothStateReceiver);
         unregisterReceiver(mBluetoothSearchReceiver);
 
         if (mConnectedTask != null) {

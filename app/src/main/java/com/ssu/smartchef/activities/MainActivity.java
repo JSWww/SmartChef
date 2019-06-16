@@ -106,6 +106,8 @@ public class MainActivity extends BaseActivity
                     loginButton.setText("login");
                     registItem.setVisible(false);
 
+                    Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
                     SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 

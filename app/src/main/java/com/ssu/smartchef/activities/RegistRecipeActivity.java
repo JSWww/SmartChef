@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,7 +46,6 @@ public class RegistRecipeActivity extends BaseActivity {
     TextView save;
     EditText title,explain,numPerson,time;
     ImageView image;
-    String image_url;
     ArrayList<Uri> filePathList = new ArrayList<>();
     RecipeData data;
     String filename;
@@ -204,7 +204,7 @@ public class RegistRecipeActivity extends BaseActivity {
         if (filePath != null) {
             //업로드 진행 Dialog 보이기
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("업로드중...");
+            progressDialog.setTitle("레시피 등록 중...");
             progressDialog.show();
             //storage
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -223,7 +223,6 @@ public class RegistRecipeActivity extends BaseActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss(); //업로드 진행 Dialog 상자
-                            Toast.makeText(getApplicationContext(), "업로드 성공!", Toast.LENGTH_SHORT).show();
                             taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -235,6 +234,10 @@ public class RegistRecipeActivity extends BaseActivity {
                                     }
                                     if(isLast == true){
                                         data.SaveDB();
+
+                                        Toast toast = Toast.makeText(getApplicationContext(), "레시피가 등록되었습니다.", Toast.LENGTH_SHORT);
+                                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
+                                        toast.show();
 
                                         Intent intent = new Intent(RegistRecipeActivity.this, MainActivity.class);
                                         startActivity(intent);
@@ -249,13 +252,13 @@ public class RegistRecipeActivity extends BaseActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss(); //업로드 진행 Dialog 상자
-                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "레시피 등록 실패", Toast.LENGTH_SHORT).show();
                         }
                     });
                     //진행중
         }
         else {
-            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "사진을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
         }
     }
 }

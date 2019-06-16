@@ -153,13 +153,13 @@ public class EmailLoginActivity extends BaseActivity implements View.OnClickList
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Link sent");
-                            showSnackbar("Sign-in link sent!");
+                            showSnackbar("인증 링크를 보냈습니다.");
 
                             mPendingEmail = email;
                         } else {
                             Exception e = task.getException();
                             Log.w(TAG, "Could not send link", e);
-                            showSnackbar("Failed to send link.");
+                            showSnackbar("인증 링크를 보내는데 실패했습니다.");
 
                             if (e instanceof FirebaseAuthInvalidCredentialsException) {
                                 emailText.setError("Invalid email address.");
@@ -198,7 +198,7 @@ public class EmailLoginActivity extends BaseActivity implements View.OnClickList
                             updateUI(null);
 
                             if (task.getException() instanceof FirebaseAuthActionCodeException) {
-                                showSnackbar("Invalid or expired sign-in link.");
+                                showSnackbar("잘못되거나 만료된 인증 링크입니다.");
                             }
                         }
                     }
