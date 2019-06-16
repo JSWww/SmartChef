@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity
                 if (user != null) {
 
                     mAuth.signOut();
-                    nickNameTextView.setText("로그인하세요");
+                    nickNameTextView.setText("로그인 하세요");
                     loginButton.setText("login");
                     registItem.setVisible(false);
 

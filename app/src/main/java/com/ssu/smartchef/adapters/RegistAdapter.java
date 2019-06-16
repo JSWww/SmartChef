@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -75,6 +76,8 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
 
             }
         });
+
+        itemViewHolder.itemListDataAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -92,7 +95,7 @@ public class RegistAdapter extends RecyclerView.Adapter<RegistAdapter.ItemViewHo
         private EditText title, explain;
         public ImageView food;
         public RecyclerView items;
-        public ImageView add_btn;
+        public Button add_btn;
         IngredientAdapter itemListDataAdapter = new IngredientAdapter();
 
         ItemViewHolder(View itemView) {

@@ -57,7 +57,8 @@ public class SpiceAdapter extends RecyclerView.Adapter<SpiceAdapter.ItemViewHold
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listData.get(itemViewHolder.getAdapterPosition()).setNum(Integer.parseInt(s.toString()));
+                if (!s.toString().equals(""))
+                    listData.get(itemViewHolder.getAdapterPosition()).setNum(Integer.parseInt(s.toString()));
             }
 
             @Override

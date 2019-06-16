@@ -19,17 +19,18 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.RegistSpiceActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:label="양념 등록"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activities.StepExplainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-
-        <activity android:name=".activities.testActivity" />
         <activity android:name=".activities.ManualScaleActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.RegistRecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="레시피 등록"/>
         <activity
             android:name=".activities.RecipeClickActivity"
             android:theme="@style/AppTheme.NoActionBar"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
     android:orientation="vertical"
     tools:context=".activities.StepExplainActivity">
 
@@ -11,13 +12,15 @@
         android:id="@+id/runStepNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#eeeeee"
         android:gravity="center"
-        android:text="SETP 1/3"
+        android:text="STEP 1/3"
         android:textSize="20dp" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/runStepImage"
@@ -25,6 +28,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             app:srcCompat="@drawable/basic_icon" />
+
         <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
             android:id="@+id/runStepScale"
             android:layout_width="200dp"
@@ -32,18 +36,18 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:direction="clockwise"
             android:visibility="invisible"
-            app:progressStrokeWidth="16dp"
+            app:direction="clockwise"
             app:formattingPattern="&#37;.2fg"
-            />
+            app:progressStrokeWidth="16dp" />
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimaryDark">
+        android:layout_marginTop="10dp"
+        android:background="#eeeeee"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/runStepBackButton"
@@ -59,8 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="20dp"
-            android:text="요리단계를 설명합니다." />
+            android:text="요리단계를 설명합니다."
+            android:textSize="20dp" />
 
         <ImageButton
             android:id="@+id/runStepNextButton"
@@ -75,19 +79,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/runStepExplain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:gravity="center_horizontal|center_vertical"
             android:paddingLeft="5dp"
+            android:paddingTop="5dp"
             android:paddingRight="5dp"
-            android:textSize="20dp"
+            android:paddingBottom="5dp"
             android:text="요리의 단계를 설명합니다.\n예를들어 고기를 다져준다"
-            android:gravity="center_horizontal|center_vertical"/>
+            android:textSize="20dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/stepIngredient"

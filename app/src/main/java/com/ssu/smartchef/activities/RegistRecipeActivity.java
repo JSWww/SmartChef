@@ -15,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -113,7 +114,7 @@ public class RegistRecipeActivity extends BaseActivity {
                 startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요"), 0);
             }
         });
-        ImageView add_step = findViewById(R.id.add_step_btn);
+        Button add_step = findViewById(R.id.add_step_btn);
         add_step.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -80,8 +80,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.1"
+                android:background="@android:color/transparent"
                 android:onClick="onClick"
-                android:text="양념 추출" />
+                android:text="양념 추출"
+                android:textColor="#e65100" />
 
         </LinearLayout>
 
@@ -180,6 +182,7 @@
             android:clickable="true"
             android:onClick="onClick"
             android:visibility="visible"
+            app:backgroundTint="#FFF8E1"
             app:srcCompat="@android:drawable/ic_media_play" />
     </LinearLayout>
 </ScrollView>

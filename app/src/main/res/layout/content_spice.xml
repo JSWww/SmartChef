@@ -15,12 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />
 
-    <ImageView
+    <Button
         android:id="@+id/add_spice_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:contentDescription="StringValue"
-        app:srcCompat="@drawable/ic_add_circle" />
+        android:backgroundTint="#e0e0e0"
+        android:text="양념 추가" />
 
 </LinearLayout>

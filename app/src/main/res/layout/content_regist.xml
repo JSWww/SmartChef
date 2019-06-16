@@ -12,12 +12,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#e0e0e0"
             android:text="레시피 제목"
             android:textSize="18sp" />
 
@@ -42,6 +43,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#e0e0e0"
             android:text="요리소개"
             android:textSize="18sp" />
 
@@ -58,6 +61,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#e0e0e0"
             android:text="카테고리"
             android:textSize="18sp" />
 
@@ -102,6 +106,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#e0e0e0"
             android:text="요리정보"
             android:textSize="18sp" />
 
@@ -118,6 +123,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="#eeeeee"
                     android:text="인원"
                     android:textSize="18sp" />
 
@@ -140,6 +146,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="#eeeeee"
                     android:text="시간"
                     android:textSize="18sp" />
 
@@ -158,21 +165,26 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#e0e0e0"
             android:text="요리단계"
             android:textSize="18sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/regist_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#eeeeee">
 
         </android.support.v7.widget.RecyclerView>
 
-        <ImageView
+        <Button
             android:id="@+id/add_step_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            app:srcCompat="@drawable/bt_addstep" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#cfd8dc"
+            android:gravity="center"
+            android:text="단계 추가" />
 
 
     </LinearLayout>

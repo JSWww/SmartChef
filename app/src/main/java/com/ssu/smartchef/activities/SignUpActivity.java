@@ -2,8 +2,9 @@ package com.ssu.smartchef.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +65,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Intent mainActivityIntent = new Intent(SignUpActivity.this, MainActivity.class);
                 mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mainActivityIntent.putExtra("nickName", nickName);
+
+                Toast toast = Toast.makeText(getApplicationContext(), "로그인 되었습니다.", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 100);
+                toast.show();
+
                 startActivity(mainActivityIntent);
             }
         }

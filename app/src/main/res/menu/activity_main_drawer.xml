@@ -11,7 +11,7 @@
         <item
             android:id="@+id/cookscale"
             android:icon="@drawable/icon_scale"
-            android:title="쿠킹저울" />
+            android:title="쿠킹 저울" />
         <item
             android:id="@+id/registSpice"
             android:icon="@drawable/help"

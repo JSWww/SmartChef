@@ -10,18 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.ssu.smartchef.R;
-import com.ssu.smartchef.adapters.RegistAdapter;
 import com.ssu.smartchef.adapters.SpiceAdapter;
-import com.ssu.smartchef.data.RecipeStepData;
 import com.ssu.smartchef.data.SpiceData;
 
 import java.lang.reflect.Type;
@@ -31,7 +27,7 @@ public class RegistSpiceActivity extends AppCompatActivity {
     SpiceAdapter adapter;
     RecyclerView recyclerView;
     TextView save;
-    ImageView add;
+    Button add;
     Gson gson;
 
     @Override
