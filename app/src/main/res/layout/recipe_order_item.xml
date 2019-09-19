@@ -44,8 +44,9 @@
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_weight="0.4"
+                android:background="@color/colorPrimary"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/basic_icon" />
+                app:srcCompat="@drawable/regist_camera" />
 
             <TextView
                 android:id="@+id/stepExplain"

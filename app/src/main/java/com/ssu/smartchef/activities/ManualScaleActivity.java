@@ -274,6 +274,8 @@ public class ManualScaleActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            sendMessage("a");
+
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
 
@@ -326,6 +328,7 @@ public class ManualScaleActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... recvMessage) {
             double weight = Double.parseDouble(recvMessage[0]);
             circularProgress.setCurrentProgress(weight);
+            sendMessage("a");
         }
 
         @Override
@@ -362,7 +365,7 @@ public class ManualScaleActivity extends AppCompatActivity {
 
         public void write(String msg){
 
-            msg += "\n";
+//            msg += "\n";
 
             try {
                 mOutputStream.write(msg.getBytes());
