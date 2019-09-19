@@ -36,6 +36,7 @@ import com.ssu.smartchef.data.SpiceData;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -370,9 +371,18 @@ public class StepExplainActivity extends AppCompatActivity {
         }
     }
 
+    void sendMessage(String msg){
+
+        if ( mConnectedTask != null ) {
+            mConnectedTask.write(msg);
+            Log.d(TAG, "send message: " + msg);
+        }
+    }
+
     private class ConnectedTask extends AsyncTask<Void, String, Boolean> {
 
         private InputStream mInputStream = null;
+        private OutputStream mOutputStream = null;
         private BluetoothSocket mBluetoothSocket = null;
 
         ConnectedTask(BluetoothSocket socket){
@@ -380,6 +390,7 @@ public class StepExplainActivity extends AppCompatActivity {
             mBluetoothSocket = socket;
             try {
                 mInputStream = mBluetoothSocket.getInputStream();
+                mOutputStream = mBluetoothSocket.getOutputStream();
             } catch (IOException e) {
                 Log.e(TAG, "socket not created", e );
             }
@@ -389,6 +400,8 @@ public class StepExplainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            sendMessage("a");
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
@@ -442,6 +455,7 @@ public class StepExplainActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... recvMessage) {
             double weight = Double.parseDouble(recvMessage[0]);
             stepScale.setCurrentProgress(weight);
+            sendMessage("a");
         }
 
         @Override
@@ -472,6 +486,18 @@ public class StepExplainActivity extends AppCompatActivity {
 
                 Log.e(TAG, "unable to close() " +
                         " socket during connection failure", e2);
+            }
+        }
+
+        public void write(String msg){
+
+//            msg += "\n";
+
+            try {
+                mOutputStream.write(msg.getBytes());
+                mOutputStream.flush();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during send", e );
             }
         }
     }

@@ -521,7 +521,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         }
 
         public void write(String msg){
-            msg += "\n";
+//            msg += "\n";
 
             try {
                 mOutputStream.write(msg.getBytes());
@@ -535,7 +535,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     }
 
     void sendMessage(){
-        String send_msg ="";
+        String send_msg ="b/";
       
         compare(spiceList,ingredientAdapter.getListData());
 
