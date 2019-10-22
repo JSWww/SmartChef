@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:weightSum="1">
+
+
+    <EditText
+        android:id="@+id/spiceNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:ems="10"
+        android:focusable="true"
+        android:inputType="number"
+        android:paddingLeft="10dp" />
+
+    <EditText
+        android:id="@+id/spiceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:ems="10"
+        android:focusable="true"
+        android:hint="재료명"
+        android:inputType="text"
+        android:paddingLeft="10dp" />
+</LinearLayout>

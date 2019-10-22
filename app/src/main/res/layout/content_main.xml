@@ -12,6 +12,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/common_google_signin_btn_text_dark_default" />
+        android:background="#eceff1"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -9,27 +9,41 @@
     tools:context=".activities.EmailLoginActivity">
 
     <EditText
-        android:id="@+id/emailText"
+        android:id="@+id/emailField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:clickable="false"
-        android:contextClickable="false"
-        android:cursorVisible="false"
-        android:ems="10"
         android:hint="@string/emailText"
-        android:importantForAutofill="no"
-        android:inputType="textWebEmailAddress"
-        tools:targetApi="o" />
+        android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress" />
 
-    <Button
-        android:id="@+id/emailAuthButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="110dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="110dp"
-        android:text="@string/emailAuth" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/emailAuthButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_shape"
+            android:text="@string/emailAuth"
+            android:textColor="#607d8b" />
+
+        <Button
+            android:id="@+id/emailSignInButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_shape"
+            android:enabled="false"
+            android:text="로그인" />
+    </LinearLayout>
 
 </LinearLayout>

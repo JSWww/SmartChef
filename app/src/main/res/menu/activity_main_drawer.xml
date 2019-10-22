@@ -11,15 +11,11 @@
         <item
             android:id="@+id/cookscale"
             android:icon="@drawable/icon_scale"
-            android:title="쿠킹저울" />
+            android:title="쿠킹 저울" />
         <item
-            android:id="@+id/cookhelp"
+            android:id="@+id/registSpice"
             android:icon="@drawable/help"
-            android:title="쿠킹저울 이용방법" />
-        <item
-            android:id="@+id/setting"
-            android:icon="@drawable/setting"
-            android:title="설정" />
+            android:title="양념 등록" />
     </group>
 
 

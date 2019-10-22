@@ -1,21 +1,25 @@
 package com.ssu.smartchef.adapters;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
-import com.ssu.smartchef.data.IngredientData;
 import com.ssu.smartchef.R;
+import com.ssu.smartchef.data.IngredientData;
 
 import java.util.ArrayList;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ItemViewHolder> {
 
-    private ArrayList<IngredientData> listData = new ArrayList<>();
-
+    public ArrayList<IngredientData> listData = new ArrayList<>();
+    private int seletedPosition = -1;
 
     @NonNull
     @Override
@@ -23,10 +27,65 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredient_item, viewGroup, false);
         return new ItemViewHolder(view);
     }
+    public void setPos(int pos){
+        seletedPosition = pos;
+    }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientAdapter.ItemViewHolder itemViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder,  int i) {
         itemViewHolder.onBind(listData.get(i));
+
+        if(seletedPosition == i){
+            itemViewHolder.ingredientText.setTextColor(Color.BLUE);
+            itemViewHolder.ingredientWeight.setTextColor(Color.BLUE);
+        }
+        else {
+            itemViewHolder.ingredientText.setTextColor(Color.BLACK);
+            itemViewHolder.ingredientWeight.setTextColor(Color.BLACK);
+        }
+        itemViewHolder.ingredientText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (listData.get(itemViewHolder.getAdapterPosition()).isEditable())
+                    listData.get(itemViewHolder.getAdapterPosition()).setIngredientName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        itemViewHolder.ingredientWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (listData.get(itemViewHolder.getAdapterPosition()).isEditable()) {
+                    if (s.toString().contains("g"))
+                        listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(Double.parseDouble(s.subSequence(0, s.length() - 1).toString()));
+                    else {
+                        if (s.toString().equals(""))
+                            listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(0);
+                        else
+                            listData.get(itemViewHolder.getAdapterPosition()).setIngredientWeight(Double.parseDouble(s.toString()));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -39,21 +98,58 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.It
         listData.add(data);
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView ingredientText;
-        private TextView ingredientWeight;
+        private EditText ingredientText;
+        private EditText ingredientWeight;
+        private ImageButton deleteButton;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ingredientText = itemView.findViewById(R.id.textView3);
-            ingredientWeight = itemView.findViewById(R.id.textView2);
+            ingredientText = itemView.findViewById(R.id.regist_ingredient_name);
+            ingredientWeight = itemView.findViewById(R.id.regist_ingredient_weight);
+            deleteButton = itemView.findViewById(R.id.ingredientDeleteButton);
+            deleteButton.setOnClickListener(this);
         }
 
         void onBind(IngredientData data) {
-            ingredientText.setText(data.getIngredientName());
-            ingredientWeight.setText(data.getIngredientWeight());
+
+            if (data.isEditable()) {
+                ingredientText.setText(data.getIngredientName());
+                deleteButton.setVisibility(View.VISIBLE);
+
+                if (data.getIngredientWeight() != 0)
+                    ingredientWeight.setText((int)(data.getIngredientWeight()) + "");
+
+                ingredientText.requestFocus();
+            }
+            else {
+                ingredientText.setText(data.getIngredientName());
+                if (data.getIngredientWeight() == (long) data.getIngredientWeight())
+                    ingredientWeight.setText(String.format("%.0fg", data.getIngredientWeight()));
+                else
+                    ingredientWeight.setText(String.format("%.1fg", data.getIngredientWeight()));
+
+                ingredientText.setEnabled(false);
+                ingredientWeight.setEnabled(false);
+            }
         }
+
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+
+            switch (id) {
+                case R.id.ingredientDeleteButton:
+                    listData.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    break;
+            }
+        }
+    }
+
+    public ArrayList<IngredientData> getListData() {
+        return listData;
     }
 }

@@ -1,10 +1,10 @@
 package com.ssu.smartchef.data;
 
+
 public class MainViewData {
     private String title;
     private String writer;
-    private String tag;
-    private int resId;
+    private String iamgeURL;
 
     public String getWriter() {
         return writer;
@@ -22,19 +22,12 @@ public class MainViewData {
         this.title = title;
     }
 
-    public String getTag() {
-        return tag;
+    public String getIamgeURL() {
+        return iamgeURL;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setIamgeURL(String iamgeURL) {
+        this.iamgeURL = iamgeURL;
     }
-
-    public int getResId() {
-        return resId;
-    }
-
-    public void setResId(int resId) {
-        this.resId = resId;
-    }
+    
 }
