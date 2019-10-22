@@ -36,6 +36,7 @@ import com.ssu.smartchef.data.SpiceData;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -150,7 +151,13 @@ public class StepExplainActivity extends AppCompatActivity {
                 else if(isScale == false){
                     index--;
                     ingredientIndex = stepList.get(index).getIngredientArrayList().size() - 1;
-                    isScale = true;
+                    if(ingredientIndex < 0) {
+                        ingredientIndex = 0;
+                    }
+                    else{
+                        isScale = true;
+                    }
+
                 }
                 if(isScale == true && stepList.get(index).getIngredientArrayList().size() != 0&&isIn(saveData,stepList.get(index).getIngredientArrayList().get(ingredientIndex).getIngredientName()) == true){
                     this.onClick(v);
@@ -168,9 +175,10 @@ public class StepExplainActivity extends AppCompatActivity {
     }
     private void dataChange(int index,boolean isScale,int ingredientNumber){
         stepNumber.setText("STEP " + (index+1) +"/"+stepList.size());
+      //  Toast.makeText(getApplicationContext(),"index : "+ index + "ingredient : " + ingredientIndex+"weight " + stepList.get(index).getIngredientArrayList().get(ingredientIndex).getIngredientWeight(),Toast.LENGTH_SHORT).show();
         if(isScale == true){
             double weight = stepList.get(index).getIngredientArrayList().get(ingredientIndex).getIngredientWeight();
-            stepScale.setMaxProgress(weight);
+            stepScale.setMaxProgress((int)weight);
             stepScale.setCurrentProgress(0);
             stepImage.setVisibility(View.INVISIBLE);
             stepScale.setVisibility(View.VISIBLE);
@@ -370,9 +378,18 @@ public class StepExplainActivity extends AppCompatActivity {
         }
     }
 
+    void sendMessage(String msg){
+
+        if ( mConnectedTask != null ) {
+            mConnectedTask.write(msg);
+            Log.d(TAG, "send message: " + msg);
+        }
+    }
+
     private class ConnectedTask extends AsyncTask<Void, String, Boolean> {
 
         private InputStream mInputStream = null;
+        private OutputStream mOutputStream = null;
         private BluetoothSocket mBluetoothSocket = null;
 
         ConnectedTask(BluetoothSocket socket){
@@ -380,6 +397,7 @@ public class StepExplainActivity extends AppCompatActivity {
             mBluetoothSocket = socket;
             try {
                 mInputStream = mBluetoothSocket.getInputStream();
+                mOutputStream = mBluetoothSocket.getOutputStream();
             } catch (IOException e) {
                 Log.e(TAG, "socket not created", e );
             }
@@ -389,6 +407,8 @@ public class StepExplainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            sendMessage("a");
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
@@ -442,6 +462,7 @@ public class StepExplainActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... recvMessage) {
             double weight = Double.parseDouble(recvMessage[0]);
             stepScale.setCurrentProgress(weight);
+            sendMessage("a");
         }
 
         @Override
@@ -474,6 +495,18 @@ public class StepExplainActivity extends AppCompatActivity {
                         " socket during connection failure", e2);
             }
         }
+
+        public void write(String msg){
+
+//            msg += "\n";
+
+            try {
+                mOutputStream.write(msg.getBytes());
+                mOutputStream.flush();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during send", e );
+            }
+        }
     }
 
     @Override
@@ -493,6 +526,7 @@ public class StepExplainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
 
         unregisterReceiver(mBluetoothSearchReceiver);
 

@@ -29,4 +29,5 @@ public class MainViewData {
     public void setIamgeURL(String iamgeURL) {
         this.iamgeURL = iamgeURL;
     }
+    
 }

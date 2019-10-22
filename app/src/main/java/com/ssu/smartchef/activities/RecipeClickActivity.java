@@ -213,6 +213,16 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(getApplicationContext(), StepExplainActivity.class);
                 ArrayList<RecipeStepData > items = recipeOrderAdapter.getListData();
                 intent.putExtra("list", items);
+                //target
+                try {
+                    unregisterReceiver(mBluetoothSearchReceiver);
+                } catch(IllegalArgumentException e) {
+
+                }
+
+                if (mConnectedTask != null) {
+                    mConnectedTask.cancel(true);
+                }
                 startActivity(intent);
                 break;
         }
@@ -521,7 +531,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
         }
 
         public void write(String msg){
-            msg += "\n";
+//            msg += "\n";
 
             try {
                 mOutputStream.write(msg.getBytes());
@@ -535,7 +545,7 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     }
 
     void sendMessage(){
-        String send_msg ="";
+        String send_msg ="b/";
       
         compare(spiceList,ingredientAdapter.getListData());
 
@@ -571,7 +581,12 @@ public class RecipeClickActivity extends AppCompatActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(mBluetoothSearchReceiver);
+
+        try {
+            unregisterReceiver(mBluetoothSearchReceiver);
+        } catch (IllegalArgumentException e) {
+
+        }
 
         if (mConnectedTask != null) {
             mConnectedTask.cancel(true);
